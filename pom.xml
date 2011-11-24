@@ -1,0 +1,37 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.lazerycode</groupId>
+    <artifactId>ebselen</artifactId>
+    <packaging>pom</packaging>
+    <version>SNAPSHOT</version>
+    <modules>
+        <module>ebselen-core</module>
+        <module>ebselen-ide-convertor</module>
+        <module>ebselen-tests</module>
+    </modules>
+    <name>Ebselen</name>
+    <url>http://repo1.maven.org/maven2</url>
+    <repositories>
+        <repository>
+            <name>jets3t</name>
+            <id>jets3t</id>
+            <url>http://jets3t.s3.amazonaws.com/maven2</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+                <version>2.3.2</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

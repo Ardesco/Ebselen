@@ -1,0 +1,66 @@
+root { 
+    display: block;
+}
+
+body {
+    background-color: #00275E;
+    font-size: .75em;
+    font-family: Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 3em;
+    color: #FFF;
+}
+
+.fail{
+    color: red;
+}
+
+.pass {
+    color: green;
+}
+
+#name, #author, #story, #time{
+    font-weight: bold;
+}
+
+#name > span, #author > span, #story > span, #time > span{
+    color: #A8B1B8;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+th {
+    color: #000;
+    background-color: #FEB729;
+}
+
+th:first-child{
+    border-top-left-radius: 10px;
+}
+
+th:last-child{
+    border-top-right-radius: 10px;
+}
+
+tr:last-child > td:first-child{
+    border-bottom-left-radius: 10px;
+}
+
+tr:last-child > td:last-child{
+    border-bottom-right-radius: 10px;
+}
+
+td, th{
+    text-align: center;
+    padding: 4px 10px;    
+}
+
+td{
+    background-color: #6D98AB;
+}
+
+td:first-child{
+    text-align: left;
+}

@@ -50,4 +50,9 @@ public interface Windows {
      * @return
      */
     File takeScreenshot();
+
+    /**
+     * Find out the resolution of the current window and set the browser window size to be the same.
+     */
+    void maximise();
 }

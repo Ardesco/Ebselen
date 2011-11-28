@@ -21,11 +21,13 @@ import com.lazerycode.ebselen.exceptions.*;
 import com.lazerycode.ebselen.handlers.LocatorHandler;
 import com.thoughtworks.selenium.Selenium;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.internal.seleniumemulation.JavascriptLibrary;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -138,6 +140,12 @@ public class EbselenCommands {
         public File takeScreenshot() {
             WebDriver augment = new Augmenter().augment(driver);
             return ((TakesScreenshot) augment).getScreenshotAs(OutputType.FILE);
+        }
+
+        public void maximise() {
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            Dimension screenResolution = new Dimension((int) toolkit.getScreenSize().getWidth(), (int) toolkit.getScreenSize().getHeight());
+            driver.manage().window().setSize(screenResolution);
         }
     }
 

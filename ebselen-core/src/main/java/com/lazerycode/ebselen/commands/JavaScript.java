@@ -37,4 +37,6 @@ public interface JavaScript {
     public enum jsEvent {
         ONLOAD, ONUNLOAD, ONBLUR, ONCHANGE, ONFOCUS, ONRESET, ONSELECT, ONSUBMIT, ONABORT, ONKEYDOWN, ONKEYPRESS, ONKEYUP, ONCLICK, ONDBLCLICK, ONMOUSEDOWN, ONMOUSEMOVE, ONMOUSEOUT, ONMOUSEOVER, ONMOUSEUP
     }
+
+    public Object executeScript (String script, Object... args);
 }

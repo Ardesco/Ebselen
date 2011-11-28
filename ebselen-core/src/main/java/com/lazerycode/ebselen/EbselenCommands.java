@@ -93,6 +93,10 @@ public class EbselenCommands {
     }
 
 
+    public APISwitch apiswitch() {
+        return new EbselenAPISwitch();
+    }
+
     private class EbselenAPISwitch implements APISwitch {
 
         public Selenium switchToSelenium(String homepageURL) {
@@ -103,6 +107,10 @@ public class EbselenCommands {
         public void switchBackToWebdriver(Selenium seleniumObject) {
             driver = ((WebDriverBackedSelenium) seleniumObject).getWrappedDriver();
         }
+    }
+
+    public com.lazerycode.ebselen.commands.Windows window() {
+        return new EbselenWindow();
     }
 
     private class EbselenWindow implements Windows {
@@ -149,11 +157,24 @@ public class EbselenCommands {
         }
     }
 
+    public com.lazerycode.ebselen.commands.JavaScript javascript() {
+        return new JavaScriptInteraction();
+    }
+
     private class JavaScriptInteraction implements JavaScript {
 
         public void triggerJavascriptEvent(jsEvent event, WebElement element) {
             jsLib.callEmbeddedSelenium(driver, "triggerEvent", element, event.toString().toLowerCase());
         }
+
+        public Object executeScript(String script, Object... args){
+            return ((JavascriptExecutor)driver).executeScript(script, args);
+        }
+
+    }
+
+    public com.lazerycode.ebselen.commands.Element element() {
+        return new ElementInteraction();
     }
 
     private class ElementInteraction implements Element {
@@ -234,6 +255,10 @@ public class EbselenCommands {
                 return false;
             }
         }
+    }
+
+    public com.lazerycode.ebselen.commands.Utility utility() {
+        return new EbselenUtility();
     }
 
     private class EbselenUtility implements Utility {
@@ -490,26 +515,6 @@ public class EbselenCommands {
         public Keyboard getKeyboardObject() {
             return ((HasInputDevices) driver).getKeyboard();
         }
-    }
-
-    public APISwitch apiswitch() {
-        return new EbselenAPISwitch();
-    }
-
-    public com.lazerycode.ebselen.commands.Windows window() {
-        return new EbselenWindow();
-    }
-
-    public com.lazerycode.ebselen.commands.JavaScript javascript() {
-        return new JavaScriptInteraction();
-    }
-
-    public com.lazerycode.ebselen.commands.Element element() {
-        return new ElementInteraction();
-    }
-
-    public com.lazerycode.ebselen.commands.Utility utility() {
-        return new EbselenUtility();
     }
 }
 

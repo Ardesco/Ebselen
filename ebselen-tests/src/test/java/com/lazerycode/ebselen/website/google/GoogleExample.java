@@ -15,7 +15,6 @@
  */
 package com.lazerycode.ebselen.website.google;
 
-import com.lazerycode.ebselen.EbselenConfiguration.selectSite;
 import com.lazerycode.ebselen.EbselenTestBase;
 import com.lazerycode.ebselen.SeleniumTestAnnotations.suiteStatus;
 import com.lazerycode.ebselen.SeleniumTestAnnotations.TestSuiteStatus;
@@ -23,7 +22,7 @@ import com.lazerycode.ebselen.SeleniumTestAnnotations.TestAuthor;
 import com.lazerycode.ebselen.SeleniumTestAnnotations.TestStoriesCovered;
 import com.lazerycode.ebselen.SeleniumTestAnnotations.SeleniumTest;
 import com.lazerycode.ebselen.SeleniumTestAnnotations.Order;
-import com.lazerycode.ebselen.google.HomePage;
+import com.lazerycode.ebselen.pagefactory.google.HomePage;
 
 
 import org.openqa.selenium.Dimension;
@@ -60,6 +59,5 @@ public class GoogleExample extends EbselenTestBase {
     public void searchGoogle() throws Exception {
         String searchTerm = "Test Search";
         google.searchFor(searchTerm);
-        driver.manage().window().setSize(new Dimension(1024, 768));
     }
 }

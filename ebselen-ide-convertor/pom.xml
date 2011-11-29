@@ -21,7 +21,7 @@
     <parent>
         <artifactId>ebselen</artifactId>
         <groupId>com.lazerycode</groupId>
-        <version>SNAPSHOT</version>
+        <version>${build.number}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.lazerycode</groupId>
             <artifactId>ebselen-core</artifactId>
-            <version>SNAPSHOT</version>
+            <version>${build.number}</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.htmlcleaner</groupId>

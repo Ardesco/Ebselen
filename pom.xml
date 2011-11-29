@@ -21,7 +21,7 @@
     <groupId>com.lazerycode</groupId>
     <artifactId>ebselen</artifactId>
     <packaging>pom</packaging>
-    <version>SNAPSHOT</version>
+    <version>${build.number}</version>
     <modules>
         <module>ebselen-core</module>
         <module>ebselen-ide-convertor</module>
@@ -33,6 +33,20 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <property>
+                    <name>!build.number</name>
+                </property>
+            </activation>
+            <properties>
+                <build.number>LOCAL-SNAPSHOT</build.number>
+            </properties>
+        </profile>
+    </profiles>
 
     <repositories>
         <repository>

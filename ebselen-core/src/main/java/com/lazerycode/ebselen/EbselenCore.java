@@ -79,16 +79,14 @@ public class EbselenCore implements EbselenConfiguration {
 
     /**
      * Start the WebDriver Instance
-     *
-     * @param selectedBrowser - Browser to use for tests
      */
-    public void startSelenium(selectedBrowser selectedBrowser) {
+    public void startSelenium() {
         if (driver != null) {
             logger.error("There appears to be an existing driver instance.. Details are: {}", driver);
             logger.error("Shutting down existing instance and starting up again...");
             stopSelenium(driver);
         }
-        driver = setBrowser(driver, selectedBrowser);
+        driver = setBrowser(driver);
         ebselen = new EbselenCommands(driver);
 //        mouse = ((HasInputDevices) driver).getMouse();
 //        keyboard = ((HasInputDevices) driver).getKeyboard();
@@ -124,15 +122,14 @@ public class EbselenCore implements EbselenConfiguration {
      * Set the driver type based upon settings scraped from Env.properties
      * run function to get release number of website being tested
      *
-     * @param driverObject    - object to instantiate
-     * @param selectedBrowser - browser to use to run tests
+     * @param driverObject - object to instantiate
      * @return WebDriver
      */
-    public WebDriver setBrowser(WebDriver driverObject, selectedBrowser selectedBrowser) {
+    public WebDriver setBrowser(WebDriver driverObject) {
         try {
             logger.debug("Set UploadDir: {}", settings.uploadDirectory());
             logger.debug("Set TempDir: {}", settings.tempDirectory());
-            switch (selectedBrowser) {
+            switch (browserDetails.getBrowser()) {
                 case FIREFOX:
                     driverObject = new FirefoxDriver(generateFirefoxProfile());
                     logger.debug("Using FIREFOX Driver...");
@@ -150,7 +147,7 @@ public class EbselenCore implements EbselenConfiguration {
                     logger.debug("Using GOOGLECHROME Driver...");
                     break;
                 case HTMLUNIT:
-                    driverObject = new HtmlUnitDriver(setHTMLUnitCapabilities(settings.getHTMLUnitEmulation()));
+                    driverObject = new HtmlUnitDriver(setHTMLUnitCapabilities(browserDetails.getHTMLUnitEmulation()));
                     logger.debug("Using HTMLUNIT Driver...");
                     break;
                 case SAFARI:

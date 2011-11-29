@@ -86,7 +86,7 @@ public class EbselenTestBase extends SeleneseTestBase {
      */
     @BeforeClass
     public static void StartBrowser() {
-        ebselenCoreInstance.startSelenium(settings.browserSetting());
+        ebselenCoreInstance.startSelenium();
         driver = ebselenCoreInstance.getDriverObject();
         ebselen = ebselenCoreInstance.getEbselenCommandsObject();
         builder = ebselenCoreInstance.getActionsBuilderObject();

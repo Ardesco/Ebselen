@@ -29,6 +29,11 @@
     </modules>
     <name>Ebselen</name>
     <url>http://repo1.maven.org/maven2</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <repositories>
         <repository>
             <name>jets3t</name>

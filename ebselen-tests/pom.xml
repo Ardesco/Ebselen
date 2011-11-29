@@ -28,6 +28,10 @@
     <artifactId>ebselen-tests</artifactId>
     <name>Ebselen Tests</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>net.sourceforge.htmlcleaner</groupId>

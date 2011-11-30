@@ -27,7 +27,7 @@ public class ExcelHandler {
     private HashMap<String, Sheet> importedSheets;
     private Sheet selectedSheet = null;
 
-    public void ExcelHandler(File excelWorkbook) throws Exception {
+    public ExcelHandler(File excelWorkbook) throws Exception {
         Workbook workbook = Workbook.getWorkbook(excelWorkbook);
         String[] sheetNames = workbook.getSheetNames();
         Sheet[] sheetData = workbook.getSheets();

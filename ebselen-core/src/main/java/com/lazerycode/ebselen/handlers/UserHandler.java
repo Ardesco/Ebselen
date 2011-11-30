@@ -22,10 +22,9 @@ import com.lazerycode.ebselen.EbselenConfiguration;
 
 public class UserHandler implements EbselenConfiguration {
 
-    private ArrayList<UserRole> roles = new ArrayList<UserRole>();
+    private HashMap<Integer, UserRole> roles = new HashMap<Integer, UserRole>();
     private String environmentalHash;
-    private String defaultDomain;
-    private String rawEmailAddress;
+    private String emailDomain = "@test.com";
     private String userName;
     private String rawUserName;
     private String firstName;
@@ -34,32 +33,16 @@ public class UserHandler implements EbselenConfiguration {
     private String description;
     private String telephoneNumber;
     private String userID;
-    private String emailAddress;
-    private boolean emailNotify = false;
 
     public UserHandler(String name, String defaultEmailDomain, String environmentalHash) throws Exception {
+        setEnvironmentalHash(environmentalHash);
         setUserName(name);
-        setEmailDomain(this.defaultDomain);
+        setEmailDomain(defaultEmailDomain);
     }
 
-    /**
-     * Gets the Email notification status (true sendSoapMessage an email out on generation, false don't)
-     *
-     * @return boolean true or false
-     * @throws Exception
-     */
-    public boolean getEmailNotificationStatus() throws Exception {
-        return this.emailNotify;
-    }
-
-    /**
-     * Sets the Email notification status (true sendSoapMessage an email out on generation, false don't)
-     *
-     * @param notify true or false
-     * @throws Exception
-     */
-    public void setEmailNotificationStatus(boolean notify) throws Exception {
-        this.emailNotify = notify;
+    public UserHandler(String name, String environmentalHash) throws Exception {
+        setEnvironmentalHash(environmentalHash);
+        setUserName(name);
     }
 
     /**
@@ -69,11 +52,11 @@ public class UserHandler implements EbselenConfiguration {
      * @param value
      * @throws Exception
      */
-    public void setEmailDomain(String value) throws Exception {
+    private void setEmailDomain(String value) throws Exception {
         if (!value.startsWith("@")) {
-            this.defaultDomain = "@" + value;
+            this.emailDomain = "@" + value;
         } else {
-            this.defaultDomain = value;
+            this.emailDomain = value;
         }
     }
 
@@ -84,55 +67,7 @@ public class UserHandler implements EbselenConfiguration {
      * @throws Exception
      */
     public String getEmailDomain() throws Exception {
-        return this.defaultDomain;
-    }
-
-    /**
-     * <h2>Sets the UserHandler Email</h2>
-     * <ul>
-     * <li>Automatically appends the defaultDomain</li>
-     * <li>Automatically appends an environmental variable to e-mailUser</li>
-     * </ul>
-     *
-     * @param emailUser The part of the e-mail before the @ sign
-     * @throws Exception
-     */
-    public void setEmail(String emailUser) throws Exception {
-        setEmail(emailUser, this.defaultDomain, false);
-    }
-
-    /**
-     * <h2>Sets the UserHandler Email</h2>
-     * <ul>
-     * <li>Automatically appends an environmental variable to e-mailUser</li>
-     * </ul>
-     *
-     * @param emailUser   The part of the e-mail before the @ sign
-     * @param emailDomain The e-mail domain (@ will be pre-pended if not supplied)
-     * @throws Exception
-     */
-    public void setEmail(String emailUser, String emailDomain) throws Exception {
-        setEmail(emailUser, emailDomain, false);
-    }
-
-    /**
-     * <h2>Sets the UserHandler Email</h2>
-     *
-     * @param emailUser        The part of the e-mail before the @ sign
-     * @param emailDomain      The e-mail domain (@ will be pre-pended if not supplied)
-     * @param doNotApplyEnvVar Appends an environmental variable to e-mailUser if true
-     * @throws Exception
-     */
-    public void setEmail(String emailUser, String emailDomain, boolean doNotApplyEnvVar) throws Exception {
-        if (!emailDomain.startsWith("@")) {
-            emailDomain = "@" + emailDomain;
-        }
-        this.rawEmailAddress = emailUser + emailDomain;
-        if (doNotApplyEnvVar) {
-            this.emailAddress = rawEmailAddress;
-        } else {
-            this.emailAddress = emailUser + this.environmentalHash + emailDomain;
-        }
+        return this.emailDomain;
     }
 
     /**
@@ -142,7 +77,7 @@ public class UserHandler implements EbselenConfiguration {
      * @throws Exception
      */
     public String getEmail() {
-        return this.emailAddress;
+        return this.userName + this.emailDomain;
     }
 
     /**
@@ -153,7 +88,7 @@ public class UserHandler implements EbselenConfiguration {
      * @throws Exception
      */
     public String getRawEmail() throws Exception {
-        return this.rawEmailAddress;
+        return this.rawUserName + this.emailDomain;
     }
 
     /**
@@ -163,7 +98,7 @@ public class UserHandler implements EbselenConfiguration {
      */
     public final void setUserName(String username) {
         this.rawUserName = username;
-        this.userName = username + this.environmentalHash;
+        this.userName = username + '_' + this.environmentalHash;
     }
 
     /**
@@ -310,22 +245,12 @@ public class UserHandler implements EbselenConfiguration {
     }
 
     /**
-     * Provide a ArrayList of roles to set (must be an ArrayList of UserRole enums)
-     *
-     * @param roleList ArrayList of UserRole.<userRole>
-     * @throws Exception
-     */
-    public void setRoles(ArrayList<UserRole> roleList) throws Exception {
-        this.roles = roleList;
-    }
-
-    /**
      * Returns an ArrayList full of type <UserRole> roles
      *
      * @return
      * @throws Exception
      */
-    public ArrayList<UserRole> getRoles() throws Exception {
+    public HashMap<Integer, UserRole> getRoles() throws Exception {
         return this.roles;
     }
 
@@ -336,7 +261,8 @@ public class UserHandler implements EbselenConfiguration {
      * @throws Exception
      */
     public void addRole(UserRole role) throws Exception {
-        this.roles.add(role);
+
+        this.roles.put(role.ordinal(), role);
     }
 
     /**
@@ -366,7 +292,7 @@ public class UserHandler implements EbselenConfiguration {
      * @throws Exception
      */
     public boolean doesUserHaveRole(UserRole role) throws Exception {
-        return this.roles.contains(role);
+        return this.roles.containsKey(role.ordinal());
     }
 
     /**
@@ -384,5 +310,13 @@ public class UserHandler implements EbselenConfiguration {
             }
         }
         return false;
+    }
+
+    private void setEnvironmentalHash(String hash) {
+        this.environmentalHash = hash;
+    }
+
+    public String getEnvironmentalHash() {
+        return this.environmentalHash;
     }
 }

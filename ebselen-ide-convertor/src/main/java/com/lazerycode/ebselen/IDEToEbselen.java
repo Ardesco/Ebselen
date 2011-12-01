@@ -143,15 +143,15 @@ public class IDEToEbselen {
     public String generateTestCode(String filename) throws Exception {
         FileHandler convertFrom = new FileHandler(convertToXML(filename));
         XMLHandler seleniumXMLFile = new XMLHandler(convertFrom.getFile());
-        int commandCount = seleniumXMLFile.xQueryReturnInt("count(/html/body/table/tbody/tr)");
+        int commandCount = seleniumXMLFile.performXPathQueryReturnInteger("count(/html/body/table/tbody/tr)");
         for (int i = 1; i <= commandCount; i++) {
             String command = "";
             String target = "";
             String value = "";
             try {
-                command = seleniumXMLFile.xQuery("//table/tbody/tr[" + i + "]/td[1]");
-                target = seleniumXMLFile.xQuery("/html/body/table/tbody/tr[" + i + "]/td[2]");
-                value = seleniumXMLFile.xQuery("/html/body/table/tbody/tr[" + i + "]/td[3]");
+                command = seleniumXMLFile.performXPathQueryReturnString("//table/tbody/tr[" + i + "]/td[1]");
+                target = seleniumXMLFile.performXPathQueryReturnString("/html/body/table/tbody/tr[" + i + "]/td[2]");
+                value = seleniumXMLFile.performXPathQueryReturnString("/html/body/table/tbody/tr[" + i + "]/td[3]");
             } catch (Exception Ex) {
                 LOGGER.warn("Invalid command '{}' found", command);
             }

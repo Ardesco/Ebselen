@@ -16,160 +16,139 @@
 
 package com.lazerycode.ebselen.handlers;
 
-import java.util.*;
-import java.io.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+
 import javax.xml.XMLConstants;
-import javax.xml.parsers.*;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.*;
-import org.w3c.dom.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class XMLHandler {
 
-    private Document xmlDocument = null;
-    private Boolean xmlNamspace = false;
     private static final Logger LOGGER = LoggerFactory.getLogger(XMLHandler.class);
-    //namespace stuff
-    private final String defaultNamespace = "DEFAULT";
-    private Map<String, String> prefix2Uri = new HashMap<String, String>();
-    private Map<String, String> uri2Prefix = new HashMap<String, String>();
-    //todo getter and setter to switch this
-    private boolean toplevelOnly = true;
+    private Document xmlDocument = null;
+    private LocalNamespaceContext namespaceMappings = new LocalNamespaceContext();
 
-    /**
-     * Constructor to generate an XML object from an existing XML file
-     *
-     * @param absoluteFile - File object to convert into XML object
-     */
     public XMLHandler(File absoluteFile) throws Exception {
-        DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-        domFactory.setNamespaceAware(true);
-        this.xmlDocument = domFactory.newDocumentBuilder().parse(absoluteFile);
-        XMLNamespaceResolver();
+        if (absoluteFile.exists()) {
+            createDocumentAndCollectPrefixes(new InputSource(new FileReader(absoluteFile)), false);
+        } else {
+            throw new IOException("File does not exist!");
+        }
     }
 
-    /**
-     * Constructor to generate an XML object from a String
-     *
-     * @param sourceXML - Source XML to convert into XML an object
-     */
+    public XMLHandler(File absoluteFile, boolean scanEntireDocumentForNamespaces) throws Exception {
+        if (absoluteFile.exists()) {
+            createDocumentAndCollectPrefixes(new InputSource(new FileReader(absoluteFile)), scanEntireDocumentForNamespaces);
+        } else {
+            throw new IOException("File does not exist!");
+        }
+    }
+
     public XMLHandler(String sourceXML) throws Exception {
+        createDocumentAndCollectPrefixes(new InputSource(new StringReader(sourceXML.trim().replaceFirst("^([\\W]+)<", "<"))), false);
+    }
+
+    public XMLHandler(String sourceXML, boolean scanEntireDocumentForNamespaces) throws Exception {
+        createDocumentAndCollectPrefixes(new InputSource(new StringReader(sourceXML.trim().replaceFirst("^([\\W]+)<", "<"))), scanEntireDocumentForNamespaces);
+    }
+
+    private void createDocumentAndCollectPrefixes(InputSource documentSource, boolean scanEntireDocument) throws Exception {
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         domFactory.setNamespaceAware(true);
-        this.xmlDocument = domFactory.newDocumentBuilder().parse(new InputSource(new StringReader(sourceXML)));
-        XMLNamespaceResolver();
+        this.xmlDocument = domFactory.newDocumentBuilder().parse(documentSource);
+        this.namespaceMappings.findNamespaces(this.xmlDocument.getFirstChild(), scanEntireDocument);
     }
 
-    //TODO CHECK ALL BELOW
-    public final void XMLNamespaceResolver() {
-        examineNode(xmlDocument.getFirstChild(), toplevelOnly);
-        LOGGER.debug("The list of the cached namespaces:");
-        for (String key : prefix2Uri.keySet()) {
-            LOGGER.debug("prefix " + key + ": uri " + prefix2Uri.get(key));
-        }
-    }
+    class LocalNamespaceContext implements NamespaceContext {
 
-    /**
-     * A single node is read, the namespace attributes are extracted and stored.
-     *
-     * @param node           to examine
-     * @param attributesOnly - if true no recursion happens
-     */
-    private void examineNode(Node node, boolean attributesOnly) {
-        NamedNodeMap attributes = node.getAttributes();
-        if (attributes == null) {
-            return;
-        }
-        for (int i = 0; i < attributes.getLength(); i++) {
-            Node attribute = attributes.item(i);
-            storeAttribute((Attr) attribute);
-        }
-        if (!attributesOnly) {
-            NodeList childNodes = node.getChildNodes();
-            for (int i = 0; i < childNodes.getLength(); i++) {
-                Node child = childNodes.item(i);
-                if (child.getNodeType() == Node.ELEMENT_NODE) {
-                    examineNode(child, false);
+        private final String defaultNamespace = "";
+        private Map<String, String> prefixMappedToUri = new HashMap<String, String>();
+        private Map<String, String> uriMappedToPrefix = new HashMap<String, String>();
+
+        public void findNamespaces(Node node, boolean attributesOnly) {
+            NamedNodeMap attributes = node.getAttributes();
+            if (attributes == null) {
+                return;
+            }
+            for (int currentAttribute = 0; currentAttribute < attributes.getLength(); currentAttribute++) {
+                storeAttribute((Attr) attributes.item(currentAttribute));
+            }
+            if (!attributesOnly) {
+                NodeList childNodes = node.getChildNodes();
+                for (int child = 0; child < childNodes.getLength(); child++) {
+                    if (childNodes.item(child).getNodeType() == Node.ELEMENT_NODE) {
+                        findNamespaces(childNodes.item(child), false);
+                    }
                 }
             }
         }
-    }
 
-    /**
-     * This method looks at an attribute and stores it, if it is a namespace
-     * attribute.
-     *
-     * @param attribute to examine
-     */
-    private void storeAttribute(Attr attribute) {
-        // examine the attributes in namespace xmlns
-        if (attribute.getNamespaceURI() != null && attribute.getNamespaceURI().equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
-            // Default namespace xmlns="uri goes here"
-            if (attribute.getNodeName().equals(XMLConstants.XMLNS_ATTRIBUTE)) {
-                putInCache(defaultNamespace, attribute.getNodeValue());
-            } else {
-                // The defined prefixes are stored here
-                putInCache(attribute.getLocalName(), attribute.getNodeValue());
+        private void storeAttribute(Attr attribute) {
+            if (attribute.getNamespaceURI() != null && attribute.getNamespaceURI().equals(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)) {
+                if (attribute.getNodeName().equals(XMLConstants.XMLNS_ATTRIBUTE)) {
+                    addToContext(attribute.getNodeValue());
+                } else {
+                    addToContext(attribute.getLocalName(), attribute.getNodeValue());
+                }
             }
         }
 
-    }
+        private void addToContext(String prefix, String uri) {
+            this.prefixMappedToUri.put(prefix, uri);
+            this.uriMappedToPrefix.put(uri, prefix);
+        }
 
-    private void putInCache(String prefix, String uri) {
-        prefix2Uri.put(prefix, uri);
-        uri2Prefix.put(uri, prefix);
-    }
+        private void addToContext(String uri) {
+            this.prefixMappedToUri.put(this.defaultNamespace, uri);
+            this.uriMappedToPrefix.put(uri, this.defaultNamespace);
+        }
 
-    /**
-     * This method is called by XPath. It returns the default namespace, if the
-     * prefix is null or "".
-     *
-     * @param prefix to search for
-     * @return uri
-     */
-    public String getNamespaceURI(String prefix) {
-        if (prefix == null || prefix.equals(XMLConstants.DEFAULT_NS_PREFIX)) {
-            return prefix2Uri.get(defaultNamespace);
-        } else {
-            return prefix2Uri.get(prefix);
+        public String getNamespaceURI(String prefix) {
+            if (prefix == null || prefix.equals(XMLConstants.DEFAULT_NS_PREFIX)) {
+                return this.prefixMappedToUri.get(this.defaultNamespace);
+            } else {
+                return this.prefixMappedToUri.get(prefix);
+            }
+        }
+
+        public String getPrefix(String namespaceURI) {
+            return uriMappedToPrefix.get(namespaceURI);
+        }
+
+        public Iterator getPrefixes(String namespaceURI) {
+            ArrayList<String> prefixes = new ArrayList<String>();
+            for (String URI : this.uriMappedToPrefix.keySet()) {
+                if (URI.equals(namespaceURI)) {
+                    prefixes.add(URI);
+                }
+            }
+            return prefixes.iterator();
         }
     }
-
-    /**
-     * This method is not needed in this context, but can be implemented in a
-     * similar way.
-     *
-     * @param namespaceURI
-     * @return
-     */
-    public String getPrefix(String namespaceURI) {
-        return uri2Prefix.get(namespaceURI);
-    }
-
-    public Iterator getPrefixes(String namespaceURI) {
-        // Not implemented
-        return null;
-    }
-
-    //TODO CHECK ALL ABOVE
 
     /**
      * Create an XPath Expression.
      *
-     * @param locator XPath location to build the Expression from.
+     * @param xPathLocator XPath location to build the Expression from.
      * @return XPathExpression - Created Expression.
      * @throws XPathExpressionException
      */
-    private XPathExpression getExpression(String locator) throws XPathExpressionException {
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        //todo not needed?        xpath.setNamespaceContext(new XMLNamespaceResolver(this.xmlDocument, xmlNamspace));
-        return xpath.compile(locator);
+    private XPathExpression constructAnXPathExpression(String xPathLocator) throws XPathExpressionException {
+        XPath xPath = XPathFactory.newInstance().newXPath();
+        xPath.setNamespaceContext(namespaceMappings);
+        return xPath.compile(xPathLocator);
     }
 
     /**
@@ -180,7 +159,29 @@ public class XMLHandler {
      * @throws XPathExpressionException
      */
     private Element getElement(String locator) throws XPathExpressionException {
-        return (Element) getExpression(locator).evaluate(this.xmlDocument, XPathConstants.NODE);
+        return (Element) constructAnXPathExpression(locator).evaluate(this.xmlDocument, XPathConstants.NODE);
+    }
+
+    /**
+     * Return the result of an XPath query on an XML Document in int format
+     *
+     * @param query - The XPath query
+     * @return int - Result of the query
+     * @throws Exception
+     */
+    public int performXPathQueryReturnInteger(String query) throws Exception {
+        return Integer.parseInt(performXPathQueryReturnString(query));
+    }
+
+    /**
+     * Return the result of an XPath query on an XML Document in String format
+     *
+     * @param query - The XPath query
+     * @return String - Result of the query
+     * @throws Exception
+     */
+    public String performXPathQueryReturnString(String query) throws Exception {
+        return constructAnXPathExpression(query).evaluate(this.xmlDocument, XPathConstants.STRING).toString();
     }
 
     /**
@@ -223,25 +224,15 @@ public class XMLHandler {
     }
 
     /**
-     * Return the result of an XPath query on an XML Document in int format
+     * Return the current XML as a string
      *
-     * @param query - The XPath query
-     * @return int - Result of the query
+     * @return String - Current XML
      * @throws Exception
      */
-    public int xQueryReturnInt(String query) throws Exception {
-        return Integer.parseInt(xQuery(query));
-    }
-
-    /**
-     * Return the result of an XPath query on an XML Document in String format
-     *
-     * @param query - The XPath query
-     * @return String - Result of the query
-     * @throws Exception
-     */
-    public String xQuery(String query) throws Exception {
-        return getExpression(query).evaluate(this.xmlDocument, XPathConstants.STRING).toString();
+    public String returnXML() throws Exception {
+        StringWriter xmlAsString = new StringWriter();
+        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(this.xmlDocument), new StreamResult(xmlAsString));
+        return xmlAsString.toString().trim();
     }
 
     /**
@@ -260,8 +251,7 @@ public class XMLHandler {
         FileHandler outputFile = new FileHandler(absoluteFileName, true);
         try {
             Result output = new StreamResult(outputFile.getWriteableFile());
-            Transformer xformer = TransformerFactory.newInstance().newTransformer();
-            xformer.transform(source, output);
+            TransformerFactory.newInstance().newTransformer().transform(source, output);
         } catch (TransformerConfigurationException Ex) {
             LOGGER.error(" Error creating file: " + Ex);
         } catch (TransformerException Ex) {

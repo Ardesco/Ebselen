@@ -1,4 +1,4 @@
-A Mavenised Selenium Test Framework.
+A Mavenised Selenium Test Framework (Built using Maven 2.2.1)
 
 This project has been written using IntelliJ IDEA.  If you open the parent POM file with IDEA it will automatically create the IDEA project files for you.
 

@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -39,9 +41,8 @@ public class TestReports {
     // Configuration settings
     private String outputDirectory;
     private reportFormat format;
-    private String templatesDirectory = "ebselen-tests/src/main/java/com/lazerycode/ebselen/templates/";//.replaceAll("/", File.separator);
-    private String htmlTestTemplate = "reportTemplate.html";
-    private String htmlCSSFile = "testStyle.css";
+    private final URL htmlTestTemplate = this.getClass().getResource("/templates/reportTemplate.html");
+    private final URL htmlCSSFile = this.getClass().getResource("/templates/testStyle.css");
 
     // Data used to create report
     private String testSuiteName;
@@ -163,8 +164,7 @@ public class TestReports {
      */
     private void createHTMLReport() throws Exception {
         String overallResult = "Pass";
-        FileHandler htmlTemplate = new FileHandler(this.templatesDirectory + this.htmlTestTemplate);
-        XMLHandler testResults = new XMLHandler(htmlTemplate.getFile());
+        XMLHandler testResults = new XMLHandler(new File(new URI(this.htmlTestTemplate.toExternalForm())));
         // Populate the "test name" field
         testResults.addTextToElement(this.testSuiteName, "//p[@id='name']/span");
         // Populate the "Author(s)" field
@@ -208,7 +208,7 @@ public class TestReports {
         testResults.addAttribute("class", overallResult.toLowerCase(), "//h2[@id='overallResult']/span");
         // Print HTML results page location
         logger.info("Test report available at {}", testResults.writeXMLFile(this.outputDirectory + this.testSuiteName.concat(".html")));
-        FileHandler cssStyle = new FileHandler(this.templatesDirectory + this.htmlCSSFile);
-        cssStyle.copyFileTo(this.outputDirectory + this.htmlCSSFile);
+        FileHandler cssStyle = new FileHandler(new File(new URI(this.htmlCSSFile.toExternalForm())));
+        cssStyle.copyFileTo(this.outputDirectory + cssStyle.getFileName());
     }
 }

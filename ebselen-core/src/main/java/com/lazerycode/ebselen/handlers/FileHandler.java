@@ -41,6 +41,19 @@ public class FileHandler {
     private File currentFile;
     private OutputStream writableFileOutputStream;
 
+    public FileHandler(File fileObject) throws Exception {
+        if (fileObject.exists()) {
+            if (fileObject.canRead()) {
+                this.currentFile = fileObject;
+                this.fileIsReadable = true;
+            } else {
+                LOGGER.error("Unable to read '{}'", this.filePath + this.fileName);
+                throw new IOException("Unable to read file " + this.filePath + this.fileName);
+            }
+        }
+        setAbsoluteFilename(fileObject.getAbsolutePath());
+    }
+
     /**
      * @param absoluteFilename
      */

@@ -60,13 +60,17 @@ public class ExcelHandler {
      * @return
      * @throws Exception
      */
-    public Cell[] getColumn(int columnNumber) throws Exception {
+    public HashMap<Integer, Cell> getColumn(int columnNumber) throws Exception {
         if (this.selectedSheet.equals(null)) {
             throw new Exception("No sheet selected.  You must select a sheet before trying to get data!");
         } else if (columnNumber > this.selectedSheet.getColumns()) {
             throw new Exception("There are only " + this.selectedSheet.getColumns() + " columns in this sheet.  Unable to select column " + columnNumber + "!");
         }
-        return this.selectedSheet.getColumn(columnNumber);
+        HashMap<Integer, Cell> selectedColumn = new HashMap<Integer, Cell>();
+        for (Cell currentCell : this.selectedSheet.getColumn(columnNumber)) {
+            selectedColumn.put(selectedColumn.size() + 1, currentCell);
+        }
+        return selectedColumn;
     }
 
     /**
@@ -77,13 +81,17 @@ public class ExcelHandler {
      * @return
      * @throws Exception
      */
-    public Cell[] getRow(int rowNumber) throws Exception {
+    public HashMap<Integer, Cell> getRow(int rowNumber) throws Exception {
         if (this.selectedSheet.equals(null)) {
             throw new Exception("No sheet selected.  You must select a sheet before trying to get data!");
         } else if (rowNumber > this.selectedSheet.getRows()) {
             throw new Exception("There are only " + this.selectedSheet.getRows() + " rows in this sheet.  Unable to select row " + rowNumber + "!");
         }
-        return this.selectedSheet.getRow(rowNumber);
+        HashMap<Integer, Cell> selectedRow = new HashMap<Integer, Cell>();
+        for (Cell currentCell : this.selectedSheet.getRow(rowNumber)) {
+            selectedRow.put(selectedRow.size() + 1, currentCell);
+        }
+        return selectedRow;
     }
 
     /**

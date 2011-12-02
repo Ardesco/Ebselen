@@ -33,15 +33,15 @@ public class ExcelHandlerTest {
     public void getRowData() throws Exception {
         ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
         testExcelFile.selectSheet("Data Sheet");
-        assertThat(testExcelFile.getRow(1).length, is(equalTo(2)));
-        assertThat(testExcelFile.getRow(1)[1].getContents(), is(equalTo("cat")));
+        assertThat(testExcelFile.getRow(1).size(), is(equalTo(2)));
+        assertThat(testExcelFile.getRow(1).get(2).getContents(), is(equalTo("cat")));
     }
 
     @Test
     public void getColumnData() throws Exception {
         ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
         testExcelFile.selectSheet("Data Sheet");
-        assertThat(testExcelFile.getColumn(1).length, is(equalTo(4)));
-        assertThat(testExcelFile.getColumn(1)[0].getContents(), is(equalTo("More Test Data")));
+        assertThat(testExcelFile.getColumn(1).size(), is(equalTo(4)));
+        assertThat(testExcelFile.getColumn(1).get(1).getContents(), is(equalTo("More Test Data")));
     }
 }

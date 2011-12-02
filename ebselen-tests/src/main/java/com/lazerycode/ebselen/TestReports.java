@@ -35,7 +35,7 @@ public class TestReports {
         HTML, DOCX, ODF, DB
     }
 
-    ResourceBundle _reporting = ResourceBundle.getBundle("Reporting");
+    ResourceBundle _reporting = ResourceBundle.getBundle("ebselen");
     private static final Logger logger = LoggerFactory.getLogger(TestReports.class);
 
     // Configuration settings

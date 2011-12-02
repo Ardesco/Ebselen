@@ -27,8 +27,7 @@ import org.openqa.selenium.WebElement;
 public class GlobalSettings implements EbselenConfiguration {
 
     //Read in in settings from properties files
-    ResourceBundle _prop = ResourceBundle.getBundle("Default");
-    ResourceBundle _propenv = ResourceBundle.getBundle("Env");
+    ResourceBundle _prop = ResourceBundle.getBundle("ebselen");
     //Settings
 
     private static int defaultTimeout = 10000;
@@ -48,21 +47,14 @@ public class GlobalSettings implements EbselenConfiguration {
     private static String dateTimeToday;
     private static String dateToday;
     private static boolean useDBBackend;
-    private static String uploadDirectory;
-    private static String tempDirectory;
-    private static String outputDirectory;
-    private static String dumpDirectory;
-    private static String homeDirectory;
     private static String siteSubDomain;
     private static String siteDomain;
     private static String path;
     private static String dbConnection;
     private static String chromeDriverLocation;
-    private static String templatesLocation;
     public static final String sepReg = "(\\\\|/)";
     private static EnumMap<selectSite, String> homePages = new EnumMap<selectSite, String>(selectSite.class);
     private static selectSite currentlySelectedSite;
-    private static String defaultEmailDomain;
     private static boolean checkHomepageLoaded;
     private static WebElement homepageElement;
     private static htmlUnitEmulation htmlunitEmulation;
@@ -76,38 +68,11 @@ public class GlobalSettings implements EbselenConfiguration {
         setDateToday();
         setDateTimeToday();
         setHomePages();
-        switch (osSetting()) {
-            case WINDOWS:
-                uploadDirectory(getString("winUploadDir"));
-                tempDirectory(getString("winTempDir"));
-                outputDirectory(getString("winOutputDir"));
-                dumpDirectory(getString("winUploadDir"));
-                homeDirectory(getString("winHomeDir"));
-                chromeDriverLocation(getString("winChromeDriver"));
-                break;
-            case OSX:
-                uploadDirectory(getString("osxUploadDir"));
-                tempDirectory(getString("osxTempDir"));
-                outputDirectory(getString("osxOutputDir"));
-                dumpDirectory(getString("osxUploadDir"));
-                homeDirectory(getString("osxHomeDir"));
-                chromeDriverLocation(getString("osxChromeDriver"));
-                break;
-            case LINUX:
-                uploadDirectory(getString("nixUploadDir"));
-                tempDirectory(getString("nixTempDir"));
-                outputDirectory(getString("nixOutputDir"));
-                dumpDirectory(getString("nixUploadDir"));
-                homeDirectory(getString("nixHomeDir"));
-                chromeDriverLocation(getString("nixChromeDriver"));
-                break;
-        }
-        templatesLocation(getString("templatesLocation"));
+
         useDBBackend(Boolean.parseBoolean(getString("enableDBConnection")));
         if (useDBBackend()) {
             databaseConnection(getString("dbTestData"));
         }
-        setDefaultEmailDomain(getString("defaultEmailDomain"));
         setHTMLUnitEmulation(getString("htmlunitemulation"));
     }
 
@@ -116,11 +81,7 @@ public class GlobalSettings implements EbselenConfiguration {
         try {
             res = _prop.getString(Key);
         } catch (Exception Ex) {
-            try {
-                res = _propenv.getString(Key);
-            } catch (Exception x) {
-                System.err.println("[ERROR] Expected Key " + Key + " does not exist in the properties file, returning null!");
-            }
+            System.err.println("[ERROR] Expected Key " + Key + " does not exist in the properties file, returning null!");
         }
         return res;
     }
@@ -151,14 +112,6 @@ public class GlobalSettings implements EbselenConfiguration {
         path = value;
     }
 
-    public String homeDirectory() {
-        return homeDirectory;
-    }
-
-    public void homeDirectory(String value) {
-        homeDirectory = value;
-    }
-
     public int defaultTimeout() {
         return defaultTimeout;
     }
@@ -181,38 +134,6 @@ public class GlobalSettings implements EbselenConfiguration {
 
     public String siteDomain() {
         return siteDomain;
-    }
-
-    public void outputDirectory(String value) {
-        outputDirectory = value;
-    }
-
-    public String outputDirectory() {
-        return outputDirectory;
-    }
-
-    public void uploadDirectory(String value) {
-        uploadDirectory = value;
-    }
-
-    public String uploadDirectory() {
-        return uploadDirectory;
-    }
-
-    public void tempDirectory(String value) {
-        tempDirectory = value;
-    }
-
-    public String tempDirectory() {
-        return tempDirectory;
-    }
-
-    public void dumpDirectory(String value) {
-        dumpDirectory = value;
-    }
-
-    public String dumpDirectory() {
-        return dumpDirectory;
     }
 
     public boolean loggedIn() {
@@ -351,18 +272,6 @@ public class GlobalSettings implements EbselenConfiguration {
         return tempPath;
     }
 
-    public void templatesLocation(String value) {
-        //Ensure that the path always ends in a /
-        if (!value.matches(".*\\\\|/$")) {
-            value += "/";
-        }
-        templatesLocation = setFilePath(value);
-    }
-
-    public String templatesLocation() {
-        return templatesLocation;
-    }
-
     private void setHomePages() {
         for (selectSite page : selectSite.values()) {
             homePages.put(page, getString(page.toString().toLowerCase()).trim());
@@ -391,14 +300,6 @@ public class GlobalSettings implements EbselenConfiguration {
 
     public selectSite getCurrentlySelectedSite() {
         return currentlySelectedSite;
-    }
-
-    private void setDefaultEmailDomain(String value) {
-        defaultEmailDomain = value;
-    }
-
-    public String getDefaultEmailDomain() {
-        return defaultEmailDomain;
     }
 
     private void setCheckHomepageLoaded(boolean value) {

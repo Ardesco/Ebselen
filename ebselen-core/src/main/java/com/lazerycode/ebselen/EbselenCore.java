@@ -88,8 +88,6 @@ public class EbselenCore implements EbselenConfiguration {
         }
         driver = setBrowser(driver);
         ebselen = new EbselenCommands(driver);
-//        mouse = ((HasInputDevices) driver).getMouse();
-//        keyboard = ((HasInputDevices) driver).getKeyboard();
         builder = new Actions(driver);
     }
 
@@ -127,8 +125,6 @@ public class EbselenCore implements EbselenConfiguration {
      */
     public WebDriver setBrowser(WebDriver driverObject) {
         try {
-            logger.debug("Set UploadDir: {}", settings.uploadDirectory());
-            logger.debug("Set TempDir: {}", settings.tempDirectory());
             switch (browserDetails.getBrowser()) {
                 case FIREFOX:
                     driverObject = new FirefoxDriver(generateFirefoxProfile());

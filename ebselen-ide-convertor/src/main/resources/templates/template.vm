@@ -13,20 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  */
-package com.ardescocode.ebselen.convertedfromide;
+package com.lazerycode.ebselen.website.convertedfromide;
 
 import java.util.HashMap;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import com.ardescocode.ebselen.core.*;
-import com.ardescocode.ebselen.customHandlers.*;
-import com.ardescocode.ebselen.testrunner.SeleniumTestAnnotations.suiteStatus;
-import com.ardescocode.ebselen.testrunner.SeleniumTestAnnotations.TestSuiteStatus;
-import com.ardescocode.ebselen.testrunner.SeleniumTestAnnotations.TestAuthor;
-import com.ardescocode.ebselen.testrunner.SeleniumTestAnnotations.TestStoriesCovered;
-import com.ardescocode.ebselen.testrunner.SeleniumTestAnnotations.Order;
-import com.ardescocode.ebselen.testrunner.SeleniumTestAnnotations.SeleniumTest;
+import com.lazerycode.ebselen.EbselenTestBase;
+import com.lazerycode.ebselen.SeleniumTestAnnotations.suiteStatus;
+import com.lazerycode.ebselen.SeleniumTestAnnotations.TestSuiteStatus;
+import com.lazerycode.ebselen.SeleniumTestAnnotations.TestAuthor;
+import com.lazerycode.ebselen.SeleniumTestAnnotations.TestStoriesCovered;
+import com.lazerycode.ebselen.SeleniumTestAnnotations.SeleniumTest;
+import com.lazerycode.ebselen.SeleniumTestAnnotations.Order;
+import com.lazerycode.ebselen.pagefactory.google.HomePage;
 import org.openqa.selenium.support.PageFactory;
 
 /**
@@ -35,7 +35,7 @@ import org.openqa.selenium.support.PageFactory;
 @TestSuiteStatus(suiteStatus.CONVERTED_FROM_IDE)
 @TestAuthor("")
 @TestStoriesCovered({""})
-public class $template extends EbselenBase {
+public class $template extends EbselenTestBase {
 
     // Default object used to hold data stored by the IDE storeXXX commands
     public static HashMap storedVariables = new HashMap();

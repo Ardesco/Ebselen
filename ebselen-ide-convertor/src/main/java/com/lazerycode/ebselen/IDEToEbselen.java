@@ -20,8 +20,11 @@ import com.lazerycode.ebselen.handlers.FileHandler;
 import com.lazerycode.ebselen.handlers.XMLHandler;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -41,8 +44,8 @@ public class IDEToEbselen {
     private String testCode = "";
     private ArrayList<String> fileList = new ArrayList<String>();
     private CreateTestCode codeGenerator = new CreateTestCode();
-    private String templateLocation = "ebselen-ide-convertor/src/main/java/com/lazerycode/ebselen/templates/template.jav"; //.replaceAll("/", File.separator);
-    private String conversionLocation = "ebselen-test/src/test/java/com/lazerycode/ebselen/website/convertedfromide"; //.replaceAll("/", File.separator);
+    private final String ebselenTestTemplate = "/templates/template.vm";
+    private final String conversionLocation = "ebselen-tests/src/test/java/com/lazerycode/ebselen/website/convertedfromide"; //.replaceAll("/", File.separator);
 
     public IDEToEbselen(String value, boolean doWalkTree) throws Exception {
         walkTree = doWalkTree;
@@ -168,14 +171,18 @@ public class IDEToEbselen {
      * @throws Exception
      */
     public void generateJavaFile(String name) throws Exception {
-        VelocityEngine ve = new VelocityEngine();
-        ve.init();
-        Template ebselenTemplate = ve.getTemplate(templateLocation);
+
+        Properties props = new Properties();
+        props.setProperty("resource.loader", "class");
+        props.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        props.setProperty("class.resource.loader.description", "Velocity Classpath Resource Loader");
+        VelocityEngine ve = new VelocityEngine(props);
         VelocityContext context = new VelocityContext();
         context.put("template", name);
         context.put("templateclass", name + ".class");
         context.put("testname", name);
         context.put("testdata", testCode);
+        Template ebselenTemplate = ve.getTemplate(ebselenTestTemplate);
         FileHandler convertedFile = new FileHandler(conversionLocation + File.separator + name + ".java", true);
         StringWriter writer = new StringWriter();
         ebselenTemplate.merge(context, writer);

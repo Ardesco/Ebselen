@@ -33,7 +33,8 @@ public class EbselenTestBase extends SeleneseTestBase {
 
     public static GlobalSettings settings = new GlobalSettings();
     public static final Logger LOGGER = LoggerFactory.getLogger(EbselenCore.class);
-    private static EbselenCore ebselenCoreInstance = new EbselenCore();
+    private static BrowserConfiguration browserToUse = new BrowserConfiguration(settings.browserSetting().toString());
+    private static EbselenCore ebselenCoreInstance = new EbselenCore(browserToUse);
     public static WebDriver driver;
     public static EbselenCommands ebselen;
     public static Actions builder;

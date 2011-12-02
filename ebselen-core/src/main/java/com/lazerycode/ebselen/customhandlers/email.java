@@ -30,6 +30,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import com.google.common.annotations.Beta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Mark Collin
  */
+@Beta
 public class email {
 
     public static final Logger logger = LoggerFactory.getLogger(email.class);

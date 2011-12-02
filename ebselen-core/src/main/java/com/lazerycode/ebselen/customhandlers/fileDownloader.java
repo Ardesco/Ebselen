@@ -16,6 +16,7 @@
 
 package com.lazerycode.ebselen.customhandlers;
 
+import com.google.common.annotations.Beta;
 import com.lazerycode.ebselen.EbselenCore;
 import com.lazerycode.ebselen.handlers.UserHandler;
 import org.apache.commons.httpclient.*;
@@ -32,6 +33,7 @@ import java.util.Calendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Beta
 public class fileDownloader {
 
     private UserHandler downloadUser;// = new UserHandler("foo", "ardescocode.com", "ffw");

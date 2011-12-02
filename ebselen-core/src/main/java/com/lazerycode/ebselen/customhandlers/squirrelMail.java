@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author MPLC
  */
+@Beta
 public class squirrelMail extends EbselenCore {
 
     private static WebDriver mailBrowser = null;

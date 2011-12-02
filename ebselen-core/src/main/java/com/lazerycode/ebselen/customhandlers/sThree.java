@@ -16,6 +16,7 @@
 
 package com.lazerycode.ebselen.customhandlers;
 
+import com.google.common.annotations.Beta;
 import com.lazerycode.ebselen.EbselenCore;
 import org.jets3t.service.*;
 import org.jets3t.service.impl.rest.httpclient.*;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author MPLC
  */
+@Beta
 public class sThree {
 
     private String awsAccessKey;// = get("s3keyid");

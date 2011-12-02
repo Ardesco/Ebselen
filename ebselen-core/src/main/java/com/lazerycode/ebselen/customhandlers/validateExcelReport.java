@@ -17,11 +17,13 @@
 //TODO pull out anything useful and delete the rest
 package com.lazerycode.ebselen.customhandlers;
 
+import com.google.common.annotations.Beta;
 import com.lazerycode.ebselen.EbselenCore;
 import com.lazerycode.ebselen.handlers.XMLHandler;
 
 import java.util.*;
 
+@Beta
 public class validateExcelReport extends EbselenCore {
 
     private HashMap tableData = new HashMap();

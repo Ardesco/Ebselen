@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
 
+import com.google.common.annotations.Beta;
 import com.lazerycode.ebselen.EbselenCore;
 import com.lazerycode.ebselen.handlers.UserHandler;
 import org.apache.commons.httpclient.HttpClient;
@@ -42,6 +43,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Class to upload files to a server via FTP or SFTP
  */
+@Beta
 public class fileUpload {
 
     private HashMap uploadblock = new HashMap();

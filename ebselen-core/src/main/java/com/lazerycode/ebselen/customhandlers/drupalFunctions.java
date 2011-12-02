@@ -16,8 +16,10 @@
 
 package com.lazerycode.ebselen.customhandlers;
 
+import com.google.common.annotations.Beta;
 import com.lazerycode.ebselen.EbselenCore;
 
+@Beta
 public class drupalFunctions extends EbselenCore {
 //
 //    /**

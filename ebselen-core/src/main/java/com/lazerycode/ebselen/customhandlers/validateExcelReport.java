@@ -140,7 +140,7 @@ public class validateExcelReport extends EbselenCore {
 //     */
 //    private void readInExcelData(String downloadPath) throws Exception {
 //        Calendar calendar = Calendar.getInstance();
-//        fileDownloader excelDownload = new fileDownloader(settings.siteSubDomain(), settings.siteDomain());
+//        FileDownloader excelDownload = new FileDownloader(settings.siteSubDomain(), settings.siteDomain());
 //        String downloadLocation = driver.findElement(By.xpath(downloadPath)).getAttribute("href").replaceFirst("^/", "");
 //        fileData = new XMLHandler(excelDownload.downloadFile(downloadLocation, "excelData" + settings.getEnvHash() + calendar.getTimeInMillis() + ".xls"));
 ////TODO still needed?        fileData.setXMLNamespace(true);
@@ -157,7 +157,7 @@ public class validateExcelReport extends EbselenCore {
 //     */
 //    private void readInXLSData(String downloadPath) throws Exception {
 //        Calendar calendar = Calendar.getInstance();
-//        fileDownloader excelDownload = new fileDownloader(settings.siteSubDomain(), settings.siteDomain());
+//        FileDownloader excelDownload = new FileDownloader(settings.siteSubDomain(), settings.siteDomain());
 //        String downloadLocation = driver.findElement(By.xpath(downloadPath)).getAttribute("href").replaceFirst("^/", "");
 //        String excelFile = excelDownload.downloadFile(downloadLocation, "excelData" + settings.getEnvHash() + calendar.getTimeInMillis() + ".xls");
 //        //Workbook workbook = Workbook.getWorkbook(new File(excelFile));

@@ -61,6 +61,18 @@ public class ExcelHandler {
      * @throws Exception
      */
     public HashMap<Integer, Cell> getColumn(int columnNumber) throws Exception {
+        return getColumn(columnNumber, false);
+    }
+
+    /**
+     * Get a specific column from the Excel Worksheet
+     * (The first column is column 1)
+     *
+     * @param columnNumber
+     * @return
+     * @throws Exception
+     */
+    public HashMap<Integer, Cell> getColumn(int columnNumber, boolean skipFirstRow) throws Exception {
         if (this.selectedSheet.equals(null)) {
             throw new Exception("No sheet selected.  You must select a sheet before trying to get data!");
         } else if (columnNumber > this.selectedSheet.getColumns()) {
@@ -69,6 +81,9 @@ public class ExcelHandler {
         HashMap<Integer, Cell> selectedColumn = new HashMap<Integer, Cell>();
         for (Cell currentCell : this.selectedSheet.getColumn(columnNumber)) {
             selectedColumn.put(selectedColumn.size() + 1, currentCell);
+        }
+        if (skipFirstRow) {
+            selectedColumn.remove(1);
         }
         return selectedColumn;
     }

@@ -34,7 +34,7 @@ public class ExcelHandlerTest {
         ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
         testExcelFile.selectSheet("Data Sheet");
         assertThat(testExcelFile.getRow(1).size(), is(equalTo(2)));
-        assertThat(testExcelFile.getRow(1).get(2).getContents(), is(equalTo("cat")));
+        assertThat(testExcelFile.getRow(1).get(2).getContents(), is(equalTo("More Test Data")));
     }
 
     @Test
@@ -42,6 +42,22 @@ public class ExcelHandlerTest {
         ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
         testExcelFile.selectSheet("Data Sheet");
         assertThat(testExcelFile.getColumn(1).size(), is(equalTo(4)));
-        assertThat(testExcelFile.getColumn(1).get(1).getContents(), is(equalTo("More Test Data")));
+        assertThat(testExcelFile.getColumn(1).get(1).getContents(), is(equalTo("Test Data")));
+    }
+
+    @Test
+    public void getRowDataSkipFirstColumn() throws Exception {
+        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        testExcelFile.selectSheet("Data Sheet");
+        assertThat(testExcelFile.getRow(1, true).size(), is(equalTo(1)));
+        assertThat(testExcelFile.getRow(1, true).get(2).getContents(), is(equalTo("More Test Data")));
+    }
+
+    @Test
+    public void getColumnDataSkipFirstRow() throws Exception {
+        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        testExcelFile.selectSheet("Data Sheet");
+        assertThat(testExcelFile.getColumn(1, true).size(), is(equalTo(3)));
+        assertThat(testExcelFile.getColumn(1, true).get(2).getContents(), is(equalTo("1")));
     }
 }

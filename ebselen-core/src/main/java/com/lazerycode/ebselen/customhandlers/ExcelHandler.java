@@ -66,9 +66,11 @@ public class ExcelHandler {
 
     /**
      * Get a specific column from the Excel Worksheet
+     * You can optionally skip the top row of the column to ensure column titles are not pulled into the data set
      * (The first column is column 1)
      *
      * @param columnNumber
+     * @param skipFirstRow
      * @return
      * @throws Exception
      */
@@ -79,7 +81,7 @@ public class ExcelHandler {
             throw new Exception("There are only " + this.selectedSheet.getColumns() + " columns in this sheet.  Unable to select column " + columnNumber + "!");
         }
         HashMap<Integer, Cell> selectedColumn = new HashMap<Integer, Cell>();
-        for (Cell currentCell : this.selectedSheet.getColumn(columnNumber)) {
+        for (Cell currentCell : this.selectedSheet.getColumn(columnNumber - 1)) {
             selectedColumn.put(selectedColumn.size() + 1, currentCell);
         }
         if (skipFirstRow) {
@@ -97,14 +99,31 @@ public class ExcelHandler {
      * @throws Exception
      */
     public HashMap<Integer, Cell> getRow(int rowNumber) throws Exception {
+        return getRow(rowNumber, false);
+    }
+
+    /**
+     * Get a specific row from the Excel Worksheet
+     * You can optionally skip the first column of the row to ensure row titles are not pulled into the data set
+     * (The first row is row 1)
+     *
+     * @param rowNumber
+     * @param skipFirstColumn
+     * @return
+     * @throws Exception
+     */
+    public HashMap<Integer, Cell> getRow(int rowNumber, boolean skipFirstColumn) throws Exception {
         if (this.selectedSheet.equals(null)) {
             throw new Exception("No sheet selected.  You must select a sheet before trying to get data!");
         } else if (rowNumber > this.selectedSheet.getRows()) {
             throw new Exception("There are only " + this.selectedSheet.getRows() + " rows in this sheet.  Unable to select row " + rowNumber + "!");
         }
         HashMap<Integer, Cell> selectedRow = new HashMap<Integer, Cell>();
-        for (Cell currentCell : this.selectedSheet.getRow(rowNumber)) {
+        for (Cell currentCell : this.selectedSheet.getRow(rowNumber - 1)) {
             selectedRow.put(selectedRow.size() + 1, currentCell);
+        }
+        if (skipFirstColumn) {
+            selectedRow.remove(1);
         }
         return selectedRow;
     }

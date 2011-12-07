@@ -39,6 +39,7 @@ public class HomePage {
      * @param searchString Search query
      */
     public void searchFor(String searchString) {
+        searchTerms.clear();
         searchTerms.sendKeys(searchString);
         performSearch.click();
     }

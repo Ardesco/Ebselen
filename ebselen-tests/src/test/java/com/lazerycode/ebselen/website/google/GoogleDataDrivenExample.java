@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.lazerycode.ebselen.website.google;
 
 import com.lazerycode.ebselen.EbselenTestBase;
-import com.lazerycode.ebselen.SeleniumTestAnnotations.suiteStatus;
-import com.lazerycode.ebselen.SeleniumTestAnnotations.TestSuiteStatus;
-import com.lazerycode.ebselen.SeleniumTestAnnotations.TestAuthor;
-import com.lazerycode.ebselen.SeleniumTestAnnotations.TestStoriesCovered;
-import com.lazerycode.ebselen.SeleniumTestAnnotations.SeleniumTest;
-import com.lazerycode.ebselen.SeleniumTestAnnotations.Order;
+import com.lazerycode.ebselen.SeleniumTestAnnotations.*;
+import com.lazerycode.ebselen.customhandlers.ExcelHandler;
 import com.lazerycode.ebselen.pagefactory.google.HomePage;
-
-
-import org.openqa.selenium.Dimension;
+import jxl.Cell;
 import org.openqa.selenium.support.PageFactory;
+
+import javax.naming.directory.SearchControls;
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
 
 /**
  * This test will perform the following actions:
@@ -39,11 +39,11 @@ import org.openqa.selenium.support.PageFactory;
 @TestSuiteStatus(suiteStatus.UNDER_CONSTRUCTION)
 @TestAuthor("Mark")
 @TestStoriesCovered({"1", "2", "3"})
-public class GoogleExample extends EbselenTestBase {
+public class GoogleDataDrivenExample extends EbselenTestBase {
 
     static HomePage google;
 
-    public GoogleExample() throws Exception {
+    public GoogleDataDrivenExample() throws Exception {
         google = PageFactory.initElements(driver, HomePage.class);
     }
 
@@ -56,7 +56,12 @@ public class GoogleExample extends EbselenTestBase {
     @SeleniumTest
     @Order(2)
     public void searchGoogle() throws Exception {
-        String searchTerm = "Test Search";
-        google.searchFor(searchTerm);
+        //Pulling the file out of the maven resources directory held in the class path (Maven magic)
+        File excelFile = new File(new URI(this.getClass().getResource("/DataDriven.xls").toExternalForm()));
+        ExcelHandler searchData = new ExcelHandler(excelFile);
+        searchData.selectSheet("Search Terms");
+        for(Cell searchTerm : searchData.getColumn(1 ,true).values()){
+            google.searchFor(searchTerm.getContents());
+        }
     }
 }

@@ -41,8 +41,8 @@ public class TestReports {
     // Configuration settings
     private String outputDirectory;
     private reportFormat format;
-    private final URL htmlTestTemplate = this.getClass().getResource("/templates/reportTemplate.html");
-    private final URL htmlCSSFile = this.getClass().getResource("/templates/testStyle.css");
+    private final URI htmlTestTemplate = this.getClass().getResource("/templates/reportTemplate.html").toURI();
+    private final URI htmlCSSFile = this.getClass().getResource("/templates/testStyle.css").toURI();
 
     // Data used to create report
     private String testSuiteName;
@@ -164,7 +164,7 @@ public class TestReports {
      */
     private void createHTMLReport() throws Exception {
         String overallResult = "Pass";
-        XMLHandler testResults = new XMLHandler(new File(new URI(this.htmlTestTemplate.toExternalForm())));
+        XMLHandler testResults = new XMLHandler(new File(this.htmlTestTemplate));
         // Populate the "test name" field
         testResults.addTextToElement(this.testSuiteName, "//p[@id='name']/span");
         // Populate the "Author(s)" field
@@ -208,7 +208,7 @@ public class TestReports {
         testResults.addAttribute("class", overallResult.toLowerCase(), "//h2[@id='overallResult']/span");
         // Print HTML results page location
         logger.info("Test report available at {}", testResults.writeXMLFile(this.outputDirectory + this.testSuiteName.concat(".html")));
-        FileHandler cssStyle = new FileHandler(new File(new URI(this.htmlCSSFile.toExternalForm())));
+        FileHandler cssStyle = new FileHandler(new File(this.htmlCSSFile));
         cssStyle.copyFileTo(this.outputDirectory + cssStyle.getFileName());
     }
 }

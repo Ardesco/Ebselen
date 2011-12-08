@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URL;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -13,26 +12,27 @@ import static org.junit.Assert.assertThat;
 
 public class XMLHandlerTest {
 
-    private final URL normalXMLFile = this.getClass().getResource("/xml/normal.xml");
-    private final URL namespaceXMLFile = this.getClass().getResource("/xml/namespace.xml");
     private final String cr = System.getProperty("line.separator");
 
     @Test
     public void performXPathQueryWithNormalXML() throws Exception {
-        XMLHandler normal = new XMLHandler(new File(new URI(normalXMLFile.toExternalForm())));
+        URI normalXMLFile = this.getClass().getResource("/xml/normal.xml").toURI();
+        XMLHandler normal = new XMLHandler(new File(normalXMLFile));
         assertThat(normal.performXPathQueryReturnInteger("count(//fruit)"), is(equalTo(2)));
     }
 
     @Test
     public void performXPathQueryWithNamespaceXML() throws Exception {
-        XMLHandler namespace = new XMLHandler(new File(new URI(namespaceXMLFile.toExternalForm())));
+        URI namespaceXMLFile = this.getClass().getResource("/xml/namespace.xml").toURI();
+        XMLHandler namespace = new XMLHandler(new File(namespaceXMLFile));
         assertThat(namespace.performXPathQueryReturnInteger("count(//atom:link)"), is(equalTo(2)));
         assertThat(namespace.performXPathQueryReturnInteger("count(//link)"), is(equalTo(3)));
     }
 
     @Test
     public void returnXMLAsString() throws Exception {
-        XMLHandler normal = new XMLHandler(new File(new URI(normalXMLFile.toExternalForm())));
+        URI normalXMLFile = this.getClass().getResource("/xml/normal.xml").toURI();
+        XMLHandler normal = new XMLHandler(new File(normalXMLFile));
         String XMLResult = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>" + cr +
                 "    <foo>" + cr +
                 "        <food>" + cr +

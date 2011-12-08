@@ -57,10 +57,10 @@ public class GoogleDataDrivenExample extends EbselenTestBase {
     @Order(2)
     public void searchGoogle() throws Exception {
         //Pulling the file out of the maven resources directory held in the class path (Maven magic)
-        File excelFile = new File(new URI(this.getClass().getResource("/DataDriven.xls").toExternalForm()));
+        File excelFile = new File(this.getClass().getResource("/DataDriven.xls").toURI());
         ExcelHandler searchData = new ExcelHandler(excelFile);
         searchData.selectSheet("Search Terms");
-        for(Cell searchTerm : searchData.getColumn(1 ,true).values()){
+        for (Cell searchTerm : searchData.getColumn(1, true).values()) {
             google.searchFor(searchTerm.getContents());
         }
     }

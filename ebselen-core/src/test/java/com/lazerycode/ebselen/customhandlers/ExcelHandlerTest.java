@@ -18,14 +18,14 @@ public class ExcelHandlerTest {
 
     @Test
     public void selectAnExcelSheet() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Blank Sheet");
         assertThat(testExcelFile.selectedSheetName(), is(equalTo("Blank Sheet")));
     }
 
     @Test
     public void getCellData() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         assertThat(testExcelFile.getCellData(1, 1).getContents(), is(equalTo("Test Data")));
         assertThat(testExcelFile.getCellData(1, 2).getContents(), is(equalTo("1")));
@@ -33,7 +33,7 @@ public class ExcelHandlerTest {
 
     @Test
     public void getRowData() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         assertThat(testExcelFile.getRow(1).size(), is(equalTo(2)));
         assertThat(testExcelFile.getRow(1).get(2).getContents(), is(equalTo("More Test Data")));
@@ -41,7 +41,7 @@ public class ExcelHandlerTest {
 
     @Test
     public void getColumnData() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         assertThat(testExcelFile.getColumn(1).size(), is(equalTo(4)));
         assertThat(testExcelFile.getColumn(1).get(1).getContents(), is(equalTo("Test Data")));
@@ -49,7 +49,7 @@ public class ExcelHandlerTest {
 
     @Test
     public void getRowDataSkipFirstColumn() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         assertThat(testExcelFile.getRow(1, true).size(), is(equalTo(1)));
         assertThat(testExcelFile.getRow(1, true).get(2).getContents(), is(equalTo("More Test Data")));
@@ -57,14 +57,14 @@ public class ExcelHandlerTest {
 
     @Test
     public void getColumnDataSkipFirstRow() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         assertThat(testExcelFile.getColumn(1, true).size(), is(equalTo(3)));
         assertThat(testExcelFile.getColumn(1, true).get(2).getContents(), is(equalTo("1")));
     }
 
     public void getTwoColumnsOfDataSkipFirstRow() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         HashMap<String, Cell> columnData = testExcelFile.mapTwoColumns(2, 1, true);
         assertThat(columnData.size(), is(equalTo(3)));
@@ -73,7 +73,7 @@ public class ExcelHandlerTest {
     }
 
     public void getTwoColumnsOfData() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         HashMap<String, Cell> columnData = testExcelFile.mapTwoColumns(2, 1);
         assertThat(columnData.size(), is(equalTo(4)));
@@ -82,7 +82,7 @@ public class ExcelHandlerTest {
     }
 
     public void getTwoRowsOfDataSkipFirstRow() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         HashMap<String, Cell> rowData = testExcelFile.mapTwoRows(2, 3, true);
         assertThat(rowData.size(), is(equalTo(1)));
@@ -90,7 +90,7 @@ public class ExcelHandlerTest {
     }
 
     public void getTwoRowsOfData() throws Exception {
-        ExcelHandler testExcelFile = new ExcelHandler(new File(new URI(excelFile.toExternalForm())));
+        ExcelHandler testExcelFile = new ExcelHandler(new File(excelFile.toURI()));
         testExcelFile.selectSheet("Data Sheet");
         HashMap<String, Cell> rowData = testExcelFile.mapTwoRows(2, 3);
         assertThat(rowData.size(), is(equalTo(2)));

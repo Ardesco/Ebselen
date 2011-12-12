@@ -28,6 +28,7 @@ public class FileDownloaderTest {
 
     private static JettyServer localWebServer = new JettyServer();
     private static int webServerPort = 8081;
+    private WebDriver driver = new HtmlUnitDriver();
 
     @BeforeClass
     public static void start() throws Exception {
@@ -39,35 +40,24 @@ public class FileDownloaderTest {
         localWebServer.stopJettyServer();
     }
 
+    @After
+    public void closeWebDriver() {
+        driver.close();
+    }
+
     @Test
     public void downloadAFile() throws Exception {
-        WebDriver driver = new HtmlUnitDriver();
-        try {
-            FileDownloader downloadTestFile = new FileDownloader(driver);
-            driver.get("http://localhost:8081/downloadTest.html");
-            WebElement downloadLink = driver.findElement(By.id("fileToDownload"));
-            downloadTestFile.fileDownloader(downloadLink);
-        } catch (Exception ex) {
-            throw new Exception(ex);
-        } finally {
-            driver.close();
-        }
+        FileDownloader downloadTestFile = new FileDownloader(driver);
+        driver.get("http://localhost:8081/downloadTest.html");
+        WebElement downloadLink = driver.findElement(By.id("fileToDownload"));
+        downloadTestFile.fileDownloader(downloadLink);
     }
 
     @Test
     public void downloadAnImage() throws Exception {
-        WebDriver driver = new HtmlUnitDriver();
-        try {
-            FileDownloader downloadTestFile = new FileDownloader(driver);
-            driver.get("http://localhost:8081/downloadTest.html");
-            WebElement image = driver.findElement(By.id("ebselenImage"));
-            downloadTestFile.imageDownloader(image);
-        } catch (Exception ex) {
-            throw new Exception(ex);
-        } finally {
-            driver.close();
-        }
+        FileDownloader downloadTestFile = new FileDownloader(driver);
+        driver.get("http://localhost:8081/downloadTest.html");
+        WebElement image = driver.findElement(By.id("ebselenImage"));
+        downloadTestFile.imageDownloader(image);
     }
-
-
 }

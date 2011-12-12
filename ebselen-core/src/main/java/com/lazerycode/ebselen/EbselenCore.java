@@ -184,6 +184,7 @@ public class EbselenCore implements EbselenConfiguration {
         prf.setPreference("privacy.popups.disable_from_plugins", 3);
         prf.setPreference("browser.xul.error_pages.enabled", false);
         prf.setPreference("general.useragent.extra.firefox", "Firefox");
+        prf.setAcceptUntrustedCertificates(true);
         return (prf);
     }
 

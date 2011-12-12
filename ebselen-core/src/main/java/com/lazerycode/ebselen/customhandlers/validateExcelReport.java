@@ -53,7 +53,7 @@ public class validateExcelReport extends EbselenCore {
 //        }
 //    }
 //
-//    public validateExcelReport(String tablePath, String downloadPath, Boolean xls) {
+//    public validateExcelReport(String tablePath, String downloadPath, Boolean web.xls) {
 //        if (!isElementPresent(tablePath)) {
 //            LOGGER.error("Unable to find results table!");
 //            return;
@@ -64,9 +64,9 @@ public class validateExcelReport extends EbselenCore {
 //        }
 //        try {
 //            readInTableData(tablePath);
-//            if (xls) {
+//            if (web.xls) {
 //                readInXLSData(downloadPath);
-//                //TODO Create a function to cmpare xls file with table.
+//                //TODO Create a function to cmpare web.xls file with table.
 //            } else {
 //                readInExcelData(downloadPath);
 //                compareTableAndFile();
@@ -100,7 +100,7 @@ public class validateExcelReport extends EbselenCore {
 //    //**************************************************************************
 //
 //    /**
-//     * This function will parse a table of results displayed on the current web page and load them into an array ready for comparison against and .xls file
+//     * This function will parse a table of results displayed on the current web page and load them into an array ready for comparison against and .web.xls file
 //     *
 //     * @author MPLC
 //     *
@@ -142,13 +142,13 @@ public class validateExcelReport extends EbselenCore {
 //        Calendar calendar = Calendar.getInstance();
 //        FileDownloader excelDownload = new FileDownloader(settings.siteSubDomain(), settings.siteDomain());
 //        String downloadLocation = driver.findElement(By.xpath(downloadPath)).getAttribute("href").replaceFirst("^/", "");
-//        fileData = new XMLHandler(excelDownload.downloadFile(downloadLocation, "excelData" + settings.getEnvHash() + calendar.getTimeInMillis() + ".xls"));
+//        fileData = new XMLHandler(excelDownload.downloadFile(downloadLocation, "excelData" + settings.getEnvHash() + calendar.getTimeInMillis() + ".web.xls"));
 ////TODO still needed?        fileData.setXMLNamespace(true);
 //        Object[] vErrors = {excelDownload};
 //    }
 //
 //    /**
-//     * Download an excel file and read it in as .xls
+//     * Download an excel file and read it in as .web.xls
 //     *
 //     * @author MPLC
 //     *
@@ -159,7 +159,7 @@ public class validateExcelReport extends EbselenCore {
 //        Calendar calendar = Calendar.getInstance();
 //        FileDownloader excelDownload = new FileDownloader(settings.siteSubDomain(), settings.siteDomain());
 //        String downloadLocation = driver.findElement(By.xpath(downloadPath)).getAttribute("href").replaceFirst("^/", "");
-//        String excelFile = excelDownload.downloadFile(downloadLocation, "excelData" + settings.getEnvHash() + calendar.getTimeInMillis() + ".xls");
+//        String excelFile = excelDownload.downloadFile(downloadLocation, "excelData" + settings.getEnvHash() + calendar.getTimeInMillis() + ".web.xls");
 //        //Workbook workbook = Workbook.getWorkbook(new File(excelFile));
 //        //Sheet sheet = workbook.getSheet(0);
 //        //int sheetColumns = sheet.getColumns();

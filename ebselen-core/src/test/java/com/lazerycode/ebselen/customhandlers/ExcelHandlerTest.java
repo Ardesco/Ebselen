@@ -4,7 +4,6 @@ import jxl.Cell;
 import org.junit.Test;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -14,7 +13,7 @@ import static org.junit.Assert.assertThat;
 
 public class ExcelHandlerTest {
 
-    private final URL excelFile = this.getClass().getResource("/xls/TestData.xls");
+    private final URL excelFile = this.getClass().getResource("/web/xls/TestData.xls");
 
     @Test
     public void selectAnExcelSheet() throws Exception {

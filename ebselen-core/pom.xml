@@ -110,6 +110,18 @@
             <artifactId>jxl</artifactId>
             <version>2.6.12</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>8.0.4.v20111024</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>8.0.4.v20111024</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -16,7 +16,9 @@
 
 package com.lazerycode.ebselen.customhandlers;
 
-import org.junit.Test;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,14 +26,26 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 public class FileDownloaderTest {
 
+    private static JettyServer localWebServer = new JettyServer();
+    private static int webServerPort = 8081;
+
+    @BeforeClass
+    public static void start() throws Exception {
+        localWebServer.startJettyServer(webServerPort);
+    }
+
+    @AfterClass
+    public static void stop() throws Exception {
+        localWebServer.stopJettyServer();
+    }
+
     @Test
     public void downloadAFile() throws Exception {
         WebDriver driver = new HtmlUnitDriver();
         try {
             FileDownloader downloadTestFile = new FileDownloader(driver);
-            driver.get("http://www.ardescosolutions.com");
-            driver.findElement(By.xpath("//ul[@id='nav']/li/descendant::a[.='Terms & Conditions']")).click();
-            WebElement downloadLink = driver.findElement(By.xpath("//a[.='Click Here']"));
+            driver.get("http://localhost:8081/downloadTest.html");
+            WebElement downloadLink = driver.findElement(By.xpath("//a[@id='fileToDownload']"));
             downloadTestFile.fileDownloader(downloadLink);
         } catch (Exception ex) {
             throw new Exception(ex);
@@ -45,8 +59,8 @@ public class FileDownloaderTest {
         WebDriver driver = new HtmlUnitDriver();
         try {
             FileDownloader downloadTestFile = new FileDownloader(driver);
-            driver.get("http://www.ardescosolutions.com");
-            WebElement image = driver.findElement(By.xpath("//table[@id='header_table']/descendant::tr/td/a/img"));
+            driver.get("http://localhost:8081/downloadTest.html");
+            WebElement image = driver.findElement(By.xpath("//img[@id='ebselenImage']"));
             downloadTestFile.imageDownloader(image);
         } catch (Exception ex) {
             throw new Exception(ex);

@@ -84,9 +84,9 @@ public class FileDownloader {
      * @param hostURL
      * @return
      */
-    private HostConfiguration mimicHostConfiguration(String hostURL) {
+    private HostConfiguration mimicHostConfiguration(String hostURL, int hostPort) {
         HostConfiguration hostConfig = new HostConfiguration();
-        hostConfig.setHost(hostURL);
+        hostConfig.setHost(hostURL, hostPort);
         return hostConfig;
     }
 
@@ -107,10 +107,10 @@ public class FileDownloader {
         URL downloadURL = new URL(downloadLocation);
         HttpClient client = new HttpClient();
         client.getParams().setCookiePolicy(CookiePolicy.RFC_2965);
-        client.setHostConfiguration(mimicHostConfiguration(downloadURL.getHost()));
+        client.setHostConfiguration(mimicHostConfiguration(downloadURL.getHost(), downloadURL.getPort()));
         client.setState(mimicCookieState(driver.manage().getCookies()));
         HttpMethod getRequest = new GetMethod(downloadURL.getPath());
-        FileHandler downloadedFile = new FileHandler(downloadPath + downloadURL.getFile(), true);
+        FileHandler downloadedFile = new FileHandler(downloadPath + downloadURL.getFile().replaceFirst("/|\\\\", ""), true);
         try {
             int status = client.executeMethod(getRequest);
             LOGGER.info("HTTP Status {} when getting '{}'", status, downloadURL.toExternalForm());

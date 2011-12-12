@@ -129,6 +129,94 @@ public class ExcelHandler {
     }
 
     /**
+     * This will map two rows into a HashMap.
+     * The key row will be converted into a string that can be used to reference the matching data in he value row.
+     * You can optionally skip the first column of the row to ensure row titles are not pulled into the data set
+     * (The first row is row 1)
+     */
+    public HashMap<String, Cell> mapTwoRows(int keyRow, int valueRow) throws Exception {
+        return mapTwoRows(keyRow, valueRow, false);
+    }
+
+    /**
+     * This will map two rows into a HashMap.
+     * The key row will be converted into a string that can be used to reference the matching data in he value row.
+     * You can optionally skip the first column of the row to ensure row titles are not pulled into the data set
+     * (The first row is row 1)
+     *
+     * @param keyRow          The row number to be used as the HashMap key.
+     * @param valueRow        The row number to be used as the HashMap value.
+     * @param skipFirstColumn
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, Cell> mapTwoRows(int keyRow, int valueRow, boolean skipFirstColumn) throws Exception {
+        if (this.selectedSheet.equals(null)) {
+            throw new Exception("No sheet selected.  You must select a sheet before trying to get data!");
+        } else if ((keyRow > this.selectedSheet.getRows()) || (valueRow > this.selectedSheet.getRows())) {
+            throw new Exception("There are only " + this.selectedSheet.getRows() + " rows in this sheet.  Unable to select rows " + keyRow + " and " + valueRow + "!");
+        }
+        Cell[] hashMapKey = this.selectedSheet.getRow(keyRow - 1);
+        Cell[] hashMapValue = this.selectedSheet.getRow(valueRow - 1);
+        if (hashMapKey.length != hashMapValue.length) {
+            throw new Exception("The rows supplied are different lengths, unable to map them!");
+        }
+        int startPoint = 0;
+        if (skipFirstColumn) {
+            startPoint = 1;
+        }
+        HashMap<String, Cell> selectedRows = new HashMap<String, Cell>();
+        for (int i = startPoint; i < hashMapKey.length; i++) {
+            selectedRows.put(hashMapKey[i].getContents(), hashMapValue[i]);
+        }
+        return selectedRows;
+    }
+
+    /**
+     * This will map two columns into a HashMap.
+     * The key column will be converted into a string that can be used to reference the matching data in he value column.
+     * You can optionally skip the first row of the column to ensure column titles are not pulled into the data set
+     * (The first row is row 1)
+     */
+    public HashMap<String, Cell> mapTwoColumns(int keyColumn, int valueColumn) throws Exception {
+        return mapTwoColumns(keyColumn, valueColumn, false);
+    }
+
+    /**
+     * This will map two columns into a HashMap.
+     * The key column will be converted into a string that can be used to reference the matching data in he value column.
+     * You can optionally skip the first row of the column to ensure column titles are not pulled into the data set
+     * (The first row is row 1)
+     *
+     * @param keyColumn       The row number to be used as the HashMap key.
+     * @param valueColumn     The row number to be used as the HashMap value.
+     * @param skipFirstColumn
+     * @return
+     * @throws Exception
+     */
+    public HashMap<String, Cell> mapTwoColumns(int keyColumn, int valueColumn, boolean skipFirstColumn) throws Exception {
+        if (this.selectedSheet.equals(null)) {
+            throw new Exception("No sheet selected.  You must select a sheet before trying to get data!");
+        } else if ((keyColumn > this.selectedSheet.getRows()) || (valueColumn > this.selectedSheet.getRows())) {
+            throw new Exception("There are only " + this.selectedSheet.getRows() + " columnss in this sheet.  Unable to select columns " + keyColumn + " and " + valueColumn + "!");
+        }
+        Cell[] hashMapKey = this.selectedSheet.getRow(keyColumn - 1);
+        Cell[] hashMapValue = this.selectedSheet.getRow(valueColumn - 1);
+        if (hashMapKey.length != hashMapValue.length) {
+            throw new Exception("The columns supplied are different lengths, unable to map them!");
+        }
+        int startPoint = 0;
+        if (skipFirstColumn) {
+            startPoint = 1;
+        }
+        HashMap<String, Cell> selectedColumns = new HashMap<String, Cell>();
+        for (int i = startPoint; i < hashMapKey.length; i++) {
+            selectedColumns.put(hashMapKey[i].getContents(), hashMapValue[i]);
+        }
+        return selectedColumns;
+    }
+
+    /**
      * Get a specific cell from the Excel Worksheet
      * (The top left cell is assumed to be in position 1, 1)
      *

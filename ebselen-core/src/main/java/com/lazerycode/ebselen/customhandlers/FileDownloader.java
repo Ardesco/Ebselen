@@ -91,8 +91,16 @@ public class FileDownloader {
     }
 
     public String fileDownloader(WebElement element) throws Exception {
+        return downloader(element, "href");
+    }
+
+    public String imageDownloader(WebElement element) throws Exception {
+        return downloader(element, "src");
+    }
+
+    public String downloader(WebElement element, String attribute) throws Exception {
         //Assuming that getAttribute does some magic to return a fully qualified URL
-        String downloadLocation = element.getAttribute("href");
+        String downloadLocation = element.getAttribute(attribute);
         if (downloadLocation.trim().equals("")) {
             throw new Exception("The element you have specified does not link to anything!");
         }

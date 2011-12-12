@@ -22,10 +22,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
-import java.net.URL;
-
 public class FileDownloaderTest {
-    
+
     @Test
     public void downloadAFile() throws Exception {
         WebDriver driver = new HtmlUnitDriver();
@@ -41,4 +39,21 @@ public class FileDownloaderTest {
             driver.close();
         }
     }
+
+    @Test
+    public void downloadAnImage() throws Exception {
+        WebDriver driver = new HtmlUnitDriver();
+        try {
+            FileDownloader downloadTestFile = new FileDownloader(driver);
+            driver.get("http://www.ardescosolutions.com");
+            WebElement image = driver.findElement(By.xpath("//table[@id='header_table']/descendant::tr/td/a/img"));
+            downloadTestFile.imageDownloader(image);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        } finally {
+            driver.close();
+        }
+    }
+
+
 }

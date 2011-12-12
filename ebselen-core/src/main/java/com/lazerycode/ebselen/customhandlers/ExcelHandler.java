@@ -200,8 +200,8 @@ public class ExcelHandler {
         } else if ((keyColumn > this.selectedSheet.getRows()) || (valueColumn > this.selectedSheet.getRows())) {
             throw new Exception("There are only " + this.selectedSheet.getRows() + " columnss in this sheet.  Unable to select columns " + keyColumn + " and " + valueColumn + "!");
         }
-        Cell[] hashMapKey = this.selectedSheet.getRow(keyColumn - 1);
-        Cell[] hashMapValue = this.selectedSheet.getRow(valueColumn - 1);
+        Cell[] hashMapKey = this.selectedSheet.getColumn(keyColumn - 1);
+        Cell[] hashMapValue = this.selectedSheet.getColumn(valueColumn - 1);
         if (hashMapKey.length != hashMapValue.length) {
             throw new Exception("The columns supplied are different lengths, unable to map them!");
         }

@@ -92,4 +92,43 @@ public class CompareImagesTest {
         imageCompare.changeLocalFileTo(localImage);
         assertThat(imageCompare.getLocalImage(), is(equalTo(new File(this.localImage.toURI()))));
     }
+    @Ignore
+    @Test
+    public void compareMatchingImagesUsingFile() throws Exception {
+        driver.get("http://localhost:8081/downloadTest.html");
+        File localImage = new File(this.localImage.toURI());
+        WebElement remoteImage = driver.findElement(By.id(locator));
+        CompareImages imageCompare = new CompareImages(localImage, remoteImage, driver);
+        assertThat(imageCompare.compareImages(), is(equalTo(true)));
+    }
+
+    @Ignore
+    @Test
+    public void compareMatchingImagesUsingString() throws Exception {
+        driver.get("http://localhost:8081/downloadTest.html");
+        String localImage = this.localImage.toExternalForm();
+        WebElement remoteImage = driver.findElement(By.id(locator));
+        CompareImages imageCompare = new CompareImages(localImage, remoteImage, driver);
+        assertThat(imageCompare.compareImages(), is(equalTo(true)));
+    }
+
+    @Ignore
+    @Test
+    public void compareDifferentImagesUsingFile() throws Exception {
+        driver.get("http://localhost:8081/downloadTest.html");
+        File localImage = new File(this.wrongLocalImage.toURI());
+        WebElement remoteImage = driver.findElement(By.id(locator));
+        CompareImages imageCompare = new CompareImages(localImage, remoteImage, driver);
+        assertThat(imageCompare.compareImages(), is(equalTo(false)));
+    }
+
+    @Ignore
+    @Test
+    public void compareDifferentImagesUsingString() throws Exception {
+        driver.get("http://localhost:8081/downloadTest.html");
+        String localImage = this.wrongLocalImage.toExternalForm();
+        WebElement remoteImage = driver.findElement(By.id(locator));
+        CompareImages imageCompare = new CompareImages(localImage, remoteImage, driver);
+        assertThat(imageCompare.compareImages(), is(equalTo(false)));
+    }
 }

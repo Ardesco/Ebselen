@@ -21,6 +21,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.security.MessageDigest;
 
 public class CompareImages {
 
@@ -59,6 +62,31 @@ public class CompareImages {
 
     public WebElement getRemoteImageWebElement() {
         return this.remoteImageObject;
+    }
+
+    private byte[] generateMessageDigest(File fileToHash) throws Exception {
+        MessageDigest MD5Hash = MessageDigest.getInstance("MD5");
+        byte[] buffer = new byte[2048];
+        InputStream theFileInputStream = new FileInputStream(fileToHash);
+        int dataReadFromFile = 0;
+        while (dataReadFromFile != -1) {
+            dataReadFromFile = theFileInputStream.read(buffer);
+            if (dataReadFromFile > 0) {
+                MD5Hash.update(buffer, 0, dataReadFromFile);
+            }
+        }
+        theFileInputStream.close();
+        return MD5Hash.digest();
+    }
+
+    public Boolean compareImages() throws Exception {
+        FileDownloader downloadRemoteImage = new FileDownloader(driver);
+        downloadRemoteImage.imageDownloader(this.remoteImageObject);
+        FileHandler downloadedImage = new FileHandler(downloadRemoteImage.getDownloadPath());
+        if (generateMessageDigest(this.localFileObject.getFile()).equals(generateMessageDigest(downloadedImage.getFile()))) {
+            return true;
+        }
+        return false;
     }
 
 }

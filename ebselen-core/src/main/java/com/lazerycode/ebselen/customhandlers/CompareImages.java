@@ -23,13 +23,13 @@ import org.openqa.selenium.WebElement;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 
 public class CompareImages {
 
     private FileHandler localFileObject;
     private WebElement remoteImageObject;
-    private FileHandler downloadedFileObject;
     private WebDriver driver;
 
     public CompareImages(File localFile, WebElement remoteImage, WebDriver driver) throws Exception {
@@ -64,25 +64,26 @@ public class CompareImages {
         return this.remoteImageObject;
     }
 
-    private byte[] generateMessageDigest(File fileToHash) throws Exception {
-        MessageDigest MD5Hash = MessageDigest.getInstance("MD5");
-        byte[] buffer = new byte[2048];
+    private String generateMessageDigest(File fileToHash) throws Exception {
+        MessageDigest MD5Digest = MessageDigest.getInstance("MD5");
+        MD5Digest.reset();
+        byte[] bufferSize = new byte[1024];
         InputStream theFileInputStream = new FileInputStream(fileToHash);
         int dataReadFromFile = 0;
         while (dataReadFromFile != -1) {
-            dataReadFromFile = theFileInputStream.read(buffer);
+            dataReadFromFile = theFileInputStream.read(bufferSize);
             if (dataReadFromFile > 0) {
-                MD5Hash.update(buffer, 0, dataReadFromFile);
+                MD5Digest.update(bufferSize, 0, dataReadFromFile);
             }
         }
         theFileInputStream.close();
-        return MD5Hash.digest();
+        BigInteger MD5Hash = new BigInteger(1, MD5Digest.digest());
+        return MD5Hash.toString(16);
     }
 
     public Boolean compareImages() throws Exception {
         FileDownloader downloadRemoteImage = new FileDownloader(driver);
-        downloadRemoteImage.imageDownloader(this.remoteImageObject);
-        FileHandler downloadedImage = new FileHandler(downloadRemoteImage.getDownloadPath());
+        FileHandler downloadedImage = new FileHandler(downloadRemoteImage.imageDownloader(this.remoteImageObject));
         if (generateMessageDigest(this.localFileObject.getFile()).equals(generateMessageDigest(downloadedImage.getFile()))) {
             return true;
         }

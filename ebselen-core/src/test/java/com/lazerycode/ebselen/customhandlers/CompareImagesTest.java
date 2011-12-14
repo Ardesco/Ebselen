@@ -62,18 +62,17 @@ public class CompareImagesTest {
         driver.get("http://localhost:8081/downloadTest.html");
         WebElement remoteImage = driver.findElement(By.id(locator));
         WebElement invalidRemoteImage = driver.findElement(By.id(wrongLocator));
-        CompareImages imageCompare = new CompareImages(localImage.toExternalForm(), invalidRemoteImage, driver);
+        CompareImages imageCompare = new CompareImages(localImage.toURI().getPath(), invalidRemoteImage, driver);
         assertThat(imageCompare.getRemoteImageWebElement(), is(equalTo(invalidRemoteImage)));
         imageCompare.changeRemoteImageTo(remoteImage);
         assertThat(imageCompare.getRemoteImageWebElement(), is(equalTo(remoteImage)));
     }
 
-    @Ignore
     @Test
     public void updateLocalFileLocationUsingString() throws Exception {
         driver.get("http://localhost:8081/downloadTest.html");
-        String localImage = this.localImage.toExternalForm();
-        String invalidLocalImage = this.wrongLocalImage.toExternalForm();
+        String localImage = this.localImage.toURI().getPath();
+        String invalidLocalImage = this.wrongLocalImage.toURI().getPath();
         WebElement remoteImage = driver.findElement(By.id(locator));
         CompareImages imageCompare = new CompareImages(invalidLocalImage, remoteImage, driver);
         assertThat(imageCompare.getLocalImage(), is(equalTo(new FileHandler(invalidLocalImage).getFile())));
@@ -92,7 +91,7 @@ public class CompareImagesTest {
         imageCompare.changeLocalFileTo(localImage);
         assertThat(imageCompare.getLocalImage(), is(equalTo(new File(this.localImage.toURI()))));
     }
-    @Ignore
+
     @Test
     public void compareMatchingImagesUsingFile() throws Exception {
         driver.get("http://localhost:8081/downloadTest.html");
@@ -102,17 +101,15 @@ public class CompareImagesTest {
         assertThat(imageCompare.compareImages(), is(equalTo(true)));
     }
 
-    @Ignore
     @Test
     public void compareMatchingImagesUsingString() throws Exception {
         driver.get("http://localhost:8081/downloadTest.html");
-        String localImage = this.localImage.toExternalForm();
+        String localImage = this.localImage.toURI().getPath();
         WebElement remoteImage = driver.findElement(By.id(locator));
         CompareImages imageCompare = new CompareImages(localImage, remoteImage, driver);
         assertThat(imageCompare.compareImages(), is(equalTo(true)));
     }
 
-    @Ignore
     @Test
     public void compareDifferentImagesUsingFile() throws Exception {
         driver.get("http://localhost:8081/downloadTest.html");
@@ -122,11 +119,10 @@ public class CompareImagesTest {
         assertThat(imageCompare.compareImages(), is(equalTo(false)));
     }
 
-    @Ignore
     @Test
     public void compareDifferentImagesUsingString() throws Exception {
         driver.get("http://localhost:8081/downloadTest.html");
-        String localImage = this.wrongLocalImage.toExternalForm();
+        String localImage = this.wrongLocalImage.toURI().getPath();
         WebElement remoteImage = driver.findElement(By.id(locator));
         CompareImages imageCompare = new CompareImages(localImage, remoteImage, driver);
         assertThat(imageCompare.compareImages(), is(equalTo(false)));

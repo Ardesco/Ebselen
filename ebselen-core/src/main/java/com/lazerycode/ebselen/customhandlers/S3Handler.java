@@ -25,13 +25,8 @@ import org.jets3t.service.security.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Class to create a compressed zip file for use by dropbox
- *
- * @author MPLC
- */
 @Beta
-public class sThree {
+public class S3Handler {
 
     private String awsAccessKey;// = get("s3keyid");
     private String awsSecretKey;// = get("s3secretkey");
@@ -45,7 +40,7 @@ public class sThree {
     /**
      * S3 Constructor - sets up a basic S3 so we can check the status of S3 uploads
      */
-    public sThree() {
+    public S3Handler() {
         awsCredentials = new AWSCredentials(awsAccessKey, awsSecretKey);
         try {
             s3Service = new RestS3Service(awsCredentials);

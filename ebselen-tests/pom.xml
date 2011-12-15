@@ -34,30 +34,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.sourceforge.htmlcleaner</groupId>
-            <artifactId>htmlcleaner</artifactId>
-            <version>2.2</version>
-        </dependency>
-        <dependency>
             <groupId>com.lazerycode</groupId>
             <artifactId>ebselen-core</artifactId>
             <version>${build.number}</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>0.9.27</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.7</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
 

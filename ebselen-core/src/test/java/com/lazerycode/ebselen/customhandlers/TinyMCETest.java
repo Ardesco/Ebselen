@@ -34,14 +34,14 @@ public class TinyMCETest {
         }.until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver driver) {
-                Boolean switched = false;
+                Boolean alertAccepted = false;
                 try {
                     driver.switchTo().alert().accept();
-                    switched = true;
+                    alertAccepted = true;
                 } catch (Exception Ex) {
                     // Couldn't switch!
                 }
-                return switched;
+                return alertAccepted;
             }
         });
     }
@@ -61,7 +61,7 @@ public class TinyMCETest {
     }
 
     @Test
-    public void writeInTinyMCEField() throws Exception {
+    public void replaceTextInTinyMCEField() throws Exception {
         driver.get("http://localhost:8081/tinymce/examples/full.html");
         TinyMCEHandler tiny = new TinyMCEHandler("elm1", driver);
         tiny.clear();

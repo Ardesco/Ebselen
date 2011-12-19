@@ -1,8 +1,12 @@
 package com.lazerycode.ebselen.customhandlers;
 
 import org.junit.*;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -12,7 +16,8 @@ public class TinyMCETest {
 
     private static JettyServer localWebServer = new JettyServer();
     private static int webServerPort = 8081;
-    private WebDriver driver = new HtmlUnitDriver();
+    //    private WebDriver driver = new HtmlUnitDriver(true);
+    private WebDriver driver = new FirefoxDriver();
 
     @BeforeClass
     public static void start() throws Exception {
@@ -24,12 +29,29 @@ public class TinyMCETest {
         localWebServer.stopJettyServer();
     }
 
+    public void waitForAlertToBeAccepted(final int timeout) {
+        new WebDriverWait(driver, timeout) {
+        }.until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver driver) {
+                Boolean switched = false;
+                try {
+                    driver.switchTo().alert().accept();
+                    switched = true;
+                } catch (Exception Ex) {
+                    // Couldn't switch!
+                }
+                return switched;
+            }
+        });
+    }
+
     @After
     public void closeWebDriver() {
         driver.close();
+        waitForAlertToBeAccepted(2000);
     }
 
-    @Ignore
     @Test
     public void clearTinyMCEField() throws Exception {
         driver.get("http://localhost:8081/tinymce/examples/full.html");
@@ -38,11 +60,11 @@ public class TinyMCETest {
         assertThat(tiny.getText(), is(equalTo("")));
     }
 
-    @Ignore
     @Test
-    public void addTextToTinyMCEFIeld() throws Exception {
+    public void writeInTinyMCEField() throws Exception {
         driver.get("http://localhost:8081/tinymce/examples/full.html");
         TinyMCEHandler tiny = new TinyMCEHandler("elm1", driver);
+        tiny.clear();
         tiny.type("foo");
         assertThat(tiny.getText(), is(equalTo("foo")));
     }

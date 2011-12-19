@@ -31,45 +31,47 @@ public class TinyMCEHandler {
     private WebDriver driver;
     private Actions builder;
     private String textAreaID;
-    private String TinyMCEIframeID;
 
 
     public TinyMCEHandler(String textAreaID, WebDriver driver) {
         this.textAreaID = textAreaID;
-        this.TinyMCEIframeID = textAreaID + "_ifr";
         this.driver = driver;
         this.builder = new Actions(this.driver);
     }
 
     private WebElement doesElementExist() throws Exception {
-        List<WebElement> tinyMCEFrame = this.driver.findElements(By.id(this.TinyMCEIframeID));
+        String TinyMCEIframeID = this.textAreaID + "_ifr";
+        List<WebElement> tinyMCEFrame = this.driver.findElements(By.id(TinyMCEIframeID));
         if (tinyMCEFrame.size() < 1) {
             throw new Exception("Unable to find TinyMCE iFrame!");
         } else if (tinyMCEFrame.size() > 1) {
-            throw new Exception("Found more than ont element with the id " + this.TinyMCEIframeID + "!");
+            throw new Exception("Found more than ont element with the id " + TinyMCEIframeID + "!");
         }
-        return tinyMCEFrame.get(1);
+        return tinyMCEFrame.get(0);
     }
 
+    private String getPopupID(){
+        return driver.findElement(By.xpath("//div[starts-with(@id, 'mce_')][@class='clearlooks2']")).getAttribute("id");
+    }
+    
     public void clear() throws Exception {
-        WebElement tinyMCEFrame = doesElementExist();
-        this.driver.switchTo().frame(tinyMCEFrame);
-        this.builder.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).keyDown(Keys.DELETE).keyUp(Keys.DELETE).perform();
-        this.driver.switchTo().defaultContent();
+        this.driver.findElement(By.id(this.textAreaID + "_newdocument")).click();
+        String popupID = getPopupID();
+        this.driver.findElement(By.id(popupID + "_ok")).click();
     }
 
     public void type(String value) throws Exception {
         WebElement tinyMCEFrame = doesElementExist();
         this.driver.switchTo().frame(tinyMCEFrame);
-        //Type
+        driver.findElement(By.id("tinymce")).sendKeys(value);
         this.driver.switchTo().defaultContent();
     }
 
     public String getText() throws Exception {
         WebElement tinyMCEFrame = doesElementExist();
         this.driver.switchTo().frame(tinyMCEFrame);
-        //Get Text
+        String tinyMCEText = driver.findElement(By.id("tinymce")).getText();
         this.driver.switchTo().defaultContent();
-        return "";
+        return tinyMCEText;
     }
 }

@@ -40,7 +40,11 @@ public class TinyMCEHandler {
     }
 
     private WebElement doesElementExist() throws Exception {
-        String TinyMCEIframeID = this.textAreaID + "_ifr";
+        return doesElementExist(this.textAreaID);
+    }
+
+    private WebElement doesElementExist(String textAreaID) throws Exception {
+        String TinyMCEIframeID = textAreaID + "_ifr";
         List<WebElement> tinyMCEFrame = this.driver.findElements(By.id(TinyMCEIframeID));
         if (tinyMCEFrame.size() < 1) {
             throw new Exception("Unable to find TinyMCE iFrame!");
@@ -50,10 +54,10 @@ public class TinyMCEHandler {
         return tinyMCEFrame.get(0);
     }
 
-    private String getPopupID(){
+    private String getPopupID() {
         return driver.findElement(By.xpath("//div[starts-with(@id, 'mce_')][@class='clearlooks2']")).getAttribute("id");
     }
-    
+
     public void clear() throws Exception {
         this.driver.findElement(By.id(this.textAreaID + "_newdocument")).click();
         String popupID = getPopupID();
@@ -63,9 +67,23 @@ public class TinyMCEHandler {
     public void type(String value) throws Exception {
         WebElement tinyMCEFrame = doesElementExist();
         this.driver.switchTo().frame(tinyMCEFrame);
-        driver.findElement(By.id("tinymce")).sendKeys(value);
+        WebElement tinyMCEEditor = driver.findElement(By.id("tinymce"));
+        tinyMCEEditor.sendKeys(value);
         this.driver.switchTo().defaultContent();
     }
+
+    public void replaceHTMLSource(String value) throws Exception {
+        driver.findElement(By.id(this.textAreaID + "_code")).click();
+        String sourceBlockID = driver.findElement(By.xpath("//div[@id='mceModalBlocker']/preceding-sibling::div")).getAttribute("id");
+        WebElement htmlSourceFrame = doesElementExist(sourceBlockID);
+        this.driver.switchTo().frame(htmlSourceFrame);
+        WebElement htmlSource = driver.findElement(By.id("htmlSource"));
+        htmlSource.clear();
+        htmlSource.sendKeys(value);
+        driver.findElement(By.id("insert")).click();
+        this.driver.switchTo().defaultContent();
+    }
+
 
     public String getText() throws Exception {
         WebElement tinyMCEFrame = doesElementExist();

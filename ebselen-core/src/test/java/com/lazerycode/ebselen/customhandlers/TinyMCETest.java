@@ -60,6 +60,7 @@ public class TinyMCETest {
         assertThat(tiny.getText(), is(equalTo("")));
     }
 
+    @Ignore
     @Test
     public void replaceTextInTinyMCEField() throws Exception {
         driver.get("http://localhost:8081/tinymce/examples/full.html");
@@ -67,5 +68,13 @@ public class TinyMCETest {
         tiny.clear();
         tiny.type("foo");
         assertThat(tiny.getText(), is(equalTo("foo")));
+    }
+
+    @Test
+    public void replaceHTMLSourceTinyMCEField() throws Exception {
+        driver.get("http://localhost:8081/tinymce/examples/full.html");
+        TinyMCEHandler tiny = new TinyMCEHandler("elm1", driver);
+        tiny.replaceHTMLSource("<h1>Foo!</h1><p>bar</p>");
+        assertThat(tiny.getText(), is(equalTo("Foo!\nbar")));
     }
 }

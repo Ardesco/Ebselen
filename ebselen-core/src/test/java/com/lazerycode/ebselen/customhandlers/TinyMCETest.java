@@ -52,6 +52,7 @@ public class TinyMCETest {
         waitForAlertToBeAccepted(2000);
     }
 
+    @Ignore
     @Test
     public void clearTinyMCEField() throws Exception {
         driver.get("http://localhost:8081/tinymce/examples/full.html");
@@ -70,6 +71,7 @@ public class TinyMCETest {
         assertThat(tiny.getText(), is(equalTo("foo")));
     }
 
+    @Ignore
     @Test
     public void replaceHTMLSourceTinyMCEField() throws Exception {
         driver.get("http://localhost:8081/tinymce/examples/full.html");

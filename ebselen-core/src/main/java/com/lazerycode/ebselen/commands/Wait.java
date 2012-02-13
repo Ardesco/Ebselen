@@ -49,6 +49,10 @@ public interface Wait {
         public void textDoesNotEqual(String text);
 
         public void textContains(String text);
+
+        public void titleIsEqualTo(String text);
+
+        public void titleDoesNotEqual(String text);
     }
 
     ForWindows untilWindow();

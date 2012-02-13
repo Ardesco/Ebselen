@@ -26,6 +26,8 @@ import org.openqa.selenium.internal.seleniumemulation.JavascriptLibrary;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.File;
@@ -39,6 +41,7 @@ public class EbselenCommands {
     private JavascriptLibrary jsLib = new JavascriptLibrary();
     private LocatorHandler loc = new LocatorHandler();
     private int defaultTimeout = 10000;
+    public static final Logger logger = LoggerFactory.getLogger(EbselenCommands.class);
 
     public EbselenCommands(WebDriver driverInstance) {
         driver = driverInstance;
@@ -167,8 +170,8 @@ public class EbselenCommands {
             jsLib.callEmbeddedSelenium(driver, "triggerEvent", element, event.toString().toLowerCase());
         }
 
-        public Object executeScript(String script, Object... args){
-            return ((JavascriptExecutor)driver).executeScript(script, args);
+        public Object executeScript(String script, Object... args) {
+            return ((JavascriptExecutor) driver).executeScript(script, args);
         }
 
     }
@@ -459,6 +462,26 @@ public class EbselenCommands {
                     @Override
                     public Boolean apply(WebDriver driver) {
                         return driver.findElement(elementLocator).getText().contains(text);
+                    }
+                });
+            }
+
+            public void titleIsEqualTo(final String text) {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        return driver.getTitle().equals(text);
+                    }
+                });
+            }
+
+            public void titleDoesNotEqual(final String text) {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        return !driver.getTitle().equals(text);
                     }
                 });
             }

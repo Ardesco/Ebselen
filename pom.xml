@@ -1,52 +1,99 @@
-
 <!--
-  ~ Copyright (c) 2010-2011 Ardesco Solutions - http://www.ardescosolutions.com
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
+~ Copyright (c) 2010-2011 Ardesco Solutions - http://www.ardescosolutions.com
+~
+~ Licensed under the Apache License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~ http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+-->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.lazerycode</groupId>
-    <artifactId>ebselen</artifactId>
-    <packaging>pom</packaging>
+
+    <parent>
+        <artifactId>oss-parent</artifactId>
+        <groupId>org.sonatype.oss</groupId>
+        <version>7</version>
+    </parent>
+
+    <groupId>com.lazerycode.ebselen</groupId>
+    <artifactId>ebselen-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <modules>
         <module>ebselen-core</module>
         <module>ebselen-ide-convertor</module>
         <module>ebselen-tests</module>
     </modules>
     <name>Ebselen</name>
-    <url>http://repo1.maven.org/maven2</url>
+    <description>A mavenised Selenium 2 (WebDriver) test framework</description>
+    <url>http://ebselen.lazerycode.com</url>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>Ardesco</id>
+            <name>Mark Collin</name>
+            <roles>
+                <role>Owner</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/Ardesco/ebselen/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Jenkins CI</system>
+        <url>http://ci.lazerycode.com</url>
+    </ciManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:Ardesco/ebselen.git</connection>
+        <developerConnection>scm:git:git@github.com:Ardesco/ebselen.git</developerConnection>
+        <url>https://github.com/Ardesco/ebselen</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <enableDBConnection>false</enableDBConnection>
+        <ardescotest>http://www.google.co.uk</ardescotest>
+        <browser>htmlunit</browser>
+        <os>windows</os>
+        <arch>64bit</arch>
+        <htmlunitemulation>none</htmlunitemulation>
+        <reportFormat>html</reportFormat>
+        <outputDirectory>target/testResults/</outputDirectory>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>local</id>
-            <activation>
-                <property>
-                    <name>!build.number</name>
-                </property>
-            </activation>
-            <properties>
-                <build.number>LOCAL-SNAPSHOT</build.number>
-            </properties>
-        </profile>
-    </profiles>
 
     <repositories>
         <repository>
@@ -57,16 +104,29 @@
     </repositories>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-                <version>2.3.2</version>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                    </configuration>
+                    <version>2.3.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>ebselen-tests</id>
+            <build>
+                <plugins>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>

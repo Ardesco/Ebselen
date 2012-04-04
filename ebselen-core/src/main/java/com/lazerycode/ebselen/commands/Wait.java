@@ -34,6 +34,8 @@ public interface Wait {
 
         public void instancesEqual(int instances);
 
+        public void instancesDoNotEqual(int instances);
+
         public void existsAfterRefreshingPage();
 
         public void doesNotExistAfterRefreshingPage();
@@ -44,11 +46,15 @@ public interface Wait {
 
         public void instancesEqualAfterRefreshingPage(int instances);
 
+        public void instancesDoNotEqualAfterRefreshingPage(int instances);
+
         public void textIsEqualTo(String text);
 
         public void textDoesNotEqual(String text);
 
         public void textContains(String text);
+
+        public void textDoesNotContain(String text);
 
         public void titleIsEqualTo(String text);
 
@@ -60,6 +66,8 @@ public interface Wait {
     interface ForWindows {
 
         public void countEquals(int count);
+
+        public void countDoesNotEqual(int count);
 
         public void countIsGreaterThan(int count);
 

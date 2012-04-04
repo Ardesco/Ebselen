@@ -381,6 +381,16 @@ public class EbselenCommands {
                 });
             }
 
+            public void instancesDoNotEqual(final int instances) {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        return (driver.findElements(elementLocator).size() != instances);
+                    }
+                });
+            }
+
             public void existsAfterRefreshingPage() {
                 new WebDriverWait(driver, timeout) {
                 }.until(new ExpectedCondition<Boolean>() {
@@ -436,6 +446,17 @@ public class EbselenCommands {
                 });
             }
 
+            public void instancesDoNotEqualAfterRefreshingPage(final int instances) {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        driver.navigate().refresh();
+                        return driver.findElements(elementLocator).size() != instances;
+                    }
+                });
+            }
+
             public void textIsEqualTo(final String text) {
                 new WebDriverWait(driver, timeout) {
                 }.until(new ExpectedCondition<Boolean>() {
@@ -462,6 +483,16 @@ public class EbselenCommands {
                     @Override
                     public Boolean apply(WebDriver driver) {
                         return driver.findElement(elementLocator).getText().contains(text);
+                    }
+                });
+            }
+
+            public void textDoesNotContain(final String text) {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        return !driver.findElement(elementLocator).getText().contains(text);
                     }
                 });
             }
@@ -499,6 +530,16 @@ public class EbselenCommands {
                     @Override
                     public Boolean apply(WebDriver driver) {
                         return driver.getWindowHandles().size() == count;
+                    }
+                });
+            }
+
+            public void countDoesNotEqual(final int count) {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        return driver.getWindowHandles().size() != count;
                     }
                 });
             }

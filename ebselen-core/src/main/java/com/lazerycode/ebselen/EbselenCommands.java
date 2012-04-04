@@ -516,6 +516,26 @@ public class EbselenCommands {
                     }
                 });
             }
+
+            public void titleContains(final String text) {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        return driver.getTitle().contains(text);
+                    }
+                });
+            }
+
+            public void titleDoesNotContain(final String text) {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        return !driver.getTitle().contains(text);
+                    }
+                });
+            }
         }
 
         public ForWindows untilWindow() {

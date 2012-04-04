@@ -201,11 +201,6 @@ public class EbselenCommands {
         }
         //TODO end
 
-        @Deprecated
-        public boolean isElementPresent(By locator) {
-            return doesElementExist(locator);
-        }
-
         public boolean doesElementExist(By locator) {
             if (driver.findElements(locator).size() > 0) {
                 return true;

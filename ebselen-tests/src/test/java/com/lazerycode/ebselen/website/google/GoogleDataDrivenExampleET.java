@@ -39,11 +39,11 @@ import java.net.URL;
 @TestSuiteStatus(suiteStatus.UNDER_CONSTRUCTION)
 @TestAuthor("Mark")
 @TestStoriesCovered({"1", "2", "3"})
-public class GoogleDataDrivenExample extends EbselenTestBase {
+public class GoogleDataDrivenExampleET extends EbselenTestBase {
 
     static HomePage google;
 
-    public GoogleDataDrivenExample() throws Exception {
+    public GoogleDataDrivenExampleET() throws Exception {
         google = PageFactory.initElements(driver, HomePage.class);
     }
 

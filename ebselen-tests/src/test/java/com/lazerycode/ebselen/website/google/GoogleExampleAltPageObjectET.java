@@ -23,6 +23,7 @@ import com.lazerycode.ebselen.SeleniumTestAnnotations.TestAuthor;
 import com.lazerycode.ebselen.SeleniumTestAnnotations.TestStoriesCovered;
 import com.lazerycode.ebselen.SeleniumTestAnnotations.SeleniumTest;
 import com.lazerycode.ebselen.SeleniumTestAnnotations.Order;
+import com.lazerycode.ebselen.pagefactory.google.DataDrivenHomePage;
 import com.lazerycode.ebselen.pagefactory.google.HomePage;
 
 
@@ -40,12 +41,12 @@ import org.openqa.selenium.support.PageFactory;
 @TestSuiteStatus(suiteStatus.UNDER_CONSTRUCTION)
 @TestAuthor("Mark")
 @TestStoriesCovered({"1", "2", "3"})
-public class GoogleExample extends EbselenTestBase {
+public class GoogleExampleAltPageObjectET extends EbselenTestBase {
 
-    static HomePage google;
+    static DataDrivenHomePage google;
 
-    public GoogleExample() throws Exception {
-        google = PageFactory.initElements(driver, HomePage.class);
+    public GoogleExampleAltPageObjectET() throws Exception {
+        google = new DataDrivenHomePage();
     }
 
     @SeleniumTest

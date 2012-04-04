@@ -182,24 +182,21 @@ public class EbselenCommands {
 
     private class ElementInteraction implements Element {
 
-        //TODO check exception thrown by a stale WebElement, this is not really an isElementPresent, more isElementSTale
-
         /**
-         * Find out if an elementLocator exists or not.
+         * Find out if an element is stale or not.
          *
          * @param element - An xpath locator
-         * @return boolean - True if elementLocator is found, otherwise false.
+         * @return boolean - True if element location is found, otherwise false.
          * @throws Exception
          */
         public boolean isElementStale(WebElement element) {
             try {
                 element.getLocation();
-            } catch (org.openqa.selenium.NoSuchElementException Ex) {
-                return false;
+            } catch (StaleElementReferenceException Ex) {
+                return true;
             }
-            return true;
+            return false;
         }
-        //TODO end
 
         public boolean doesElementExist(By locator) {
             if (driver.findElements(locator).size() > 0) {

@@ -23,4 +23,3 @@ This will do an initial build, update all your dependencies using maven and put 
 To do the above you will need to have maven installed and accessible through the command line:
 
 http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
-

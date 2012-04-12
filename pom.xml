@@ -84,14 +84,6 @@
         <outputDirectory>target/testResults/</outputDirectory>
     </properties>
 
-    <repositories>
-        <repository>
-            <name>jets3t</name>
-            <id>jets3t</id>
-            <url>http://jets3t.s3.amazonaws.com/maven2</url>
-        </repository>
-    </repositories>
-
     <build>
         <pluginManagement>
             <plugins>

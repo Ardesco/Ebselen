@@ -24,10 +24,8 @@ import org.openqa.selenium.support.How;
 public class HomePage {
 
     public static GlobalSettings settings = new GlobalSettings();
-    @FindBy(how = How.XPATH, using = "//input[@id='lst-ib']")
+    @FindBy(how = How.NAME, using = "q")
     private WebElement searchTerms;
-    @FindBy(how = How.XPATH, using = "//div[@id='sblsbb']/button")
-    private WebElement performSearch;
 
     public HomePage() {
         //Set the homepage element, this will be checked every time openHomepage is called
@@ -42,6 +40,6 @@ public class HomePage {
     public void searchFor(String searchString) {
         searchTerms.clear();
         searchTerms.sendKeys(searchString);
-        performSearch.click();
+        searchTerms.submit();
     }
 }

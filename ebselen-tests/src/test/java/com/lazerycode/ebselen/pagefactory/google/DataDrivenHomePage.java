@@ -51,6 +51,6 @@ public class DataDrivenHomePage extends EbselenTestBase {
     public void searchFor(String searchString) {
         returnWebElement("searchTerms").clear();
         returnWebElement("searchTerms").sendKeys(searchString);
-        returnWebElement("performSearch").click();
+        returnWebElement("searchTerms").submit();
     }
 }

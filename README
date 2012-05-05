@@ -24,13 +24,17 @@ To do the above you will need to have maven installed and accessible through the
 
 http://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
 
-All selenium tests should be placed within the ebselen-test module under the tests folder.  They also must end with ET, and must not have "Test" in thier name (e.g. GoogleExampleET.java).  This ensures that building the framework does not run the selenium tests, and running the selenium test does not invoke all the framework tests.
+All selenium tests should be placed within the ebselen-test module under the tests folder.  They *must* all end with ET, and they *must not* have "Test" in their name (e.g. GoogleExampleET.java).  This ensures that building the framework does not run the selenium tests, and running the selenium tests does not invoke all the framework tests.
 
-To run selenium tests type "mvn verify -Pebselen-tests"
+To run the selenium tests type:
 
-By default the tests will tun in htmlunit (good for a build server), if you want to run them in a different browser you can specify it on the command line.
+"mvn verify -Pebselen-tests"
 
-For example to run the tests in FireFox type "mvn verify -Pebselen-tests -Dbrowser=firefox"
+By default the tests will run in htmlunit (good for a headless build server), if you want to run them in a different browser you can specify it on the command line.
+
+For example to run the tests in FireFox type:
+
+"mvn verify -Pebselen-tests -Dbrowser=firefox"
 
 Currently supported browsers options are:
 
@@ -42,3 +46,5 @@ ie9
 opera
 googlechrome
 htmlunit
+
+(all ie options will use the version of ie currently installed upon your machine)

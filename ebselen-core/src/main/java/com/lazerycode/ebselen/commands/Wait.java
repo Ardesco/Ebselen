@@ -77,4 +77,10 @@ public interface Wait {
 
         public void countIsLessThan(int count);
     }
+
+    ForEvent untilEvent();
+
+    interface ForEvent {
+        public void untilJQueryProcessingHasCompleted();
+    }
 }

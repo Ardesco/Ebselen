@@ -576,6 +576,24 @@ public class EbselenCommands {
                 });
             }
         }
+
+        public ForEvent untilEvent() {
+            return new EbselenForEvent();
+        }
+
+        private class EbselenForEvent implements ForEvent {
+
+            public void untilJQueryProcessingHasCompleted() {
+                new WebDriverWait(driver, timeout) {
+                }.until(new ExpectedCondition<Boolean>() {
+                    @Override
+                    public Boolean apply(WebDriver driver) {
+                        boolean jQueryActive = (Boolean) ((JavascriptExecutor) driver).executeScript("return jQuery.active == 0");
+                        return jQueryActive;
+                    }
+                });
+            }
+        }
     }
 
     public ControlObject getControlObject() {

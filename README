@@ -16,7 +16,7 @@ If you have dependency problems you probably need to do an initial build of the 
 
  * Open a terminal/command prompt
  * Navigate to the project root dir
- * type “mvn clean install –U”
+ * type “mvn clean install -U”
 
 This will do an initial build, update all your dependencies using maven and put the locally built ebselen jars into your .m2 directory.
 

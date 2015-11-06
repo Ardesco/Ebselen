@@ -1,3 +1,8 @@
+DO NOT USE THIS AS A FRANEWORK
+====================
+
+###This is old code written many years ago and not the way I would suggest you do things now.  It's left here for posterity, it really is not the right way to go about things though.  I suggets you haev a look at https://github.com/Ardesco/Selenium-Maven-Template instead
+
 A Mavenised Selenium Test Framework (Built using Maven 2.2.1)
 
 This project has been written using IntelliJ IDEA.  If you open the parent POM file with IDEA it will automatically create the IDEA project files for you.

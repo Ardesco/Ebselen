@@ -1,4 +1,4 @@
-DO NOT USE THIS AS A FRANEWORK
+DO NOT USE THIS AS A FRAMEWORK
 ====================
 
 ### This is old code written many years ago and not the way I would suggest you do things now.  It's left here for posterity, it really is not the right way to go about things though.  I suggets you have a look at https://github.com/Ardesco/Selenium-Maven-Template instead
